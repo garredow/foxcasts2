@@ -1,0 +1,8 @@
+.app-bar {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.app-bar .menu-icon {
+  margin: 0 20px 0 -12px;
+}
