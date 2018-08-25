@@ -12,6 +12,7 @@ class PodcastService {
         return results.map(episode => ({
           ...episode,
           authorId: podcast.authorId,
+          author: episode.author || podcast.author,
           podcastId: podcast.id,
         }));
       });

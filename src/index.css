@@ -24,3 +24,13 @@ a {
     transform: rotate(359deg);
   }
 }
+
+/* Some commonly used styles */
+
+.text-center {
+  text-align: center;
+}
+
+.padding-15 {
+  padding: 15px;
+}
