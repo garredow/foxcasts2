@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconButton, Dialog, Slide, AppBar, Toolbar } from '@material-ui/core';
-import { Close as CloseIcon } from '@material-ui/icons';
+import CloseIcon from '@material-ui/icons/Close';
 import AudioPlayer from 'react-audio-player';
 import MiniPlayer from 'components/MiniPlayer';
 import FullPlayer from 'components/FullPlayer';

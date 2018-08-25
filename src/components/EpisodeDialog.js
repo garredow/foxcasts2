@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, AppBar, Toolbar, IconButton, Slide } from '@material-ui/core';
-import { Close as CloseIcon } from '@material-ui/icons';
+import CloseIcon from '@material-ui/icons/Close';
 import EpisodeDetail from '../components/EpisodeDetail';
 import './EpisodeDialog.css';
 

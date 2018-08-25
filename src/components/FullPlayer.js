@@ -1,12 +1,10 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Typography, ButtonBase, Button, LinearProgress, IconButton } from '@material-ui/core';
-import {
-  PlayArrow as PlayIcon,
-  Pause as PauseIcon,
-  Replay10 as JumpBackIcon,
-  Forward30 as JumpForwardIcon,
-} from '@material-ui/icons';
+import { Typography, Button, LinearProgress, IconButton } from '@material-ui/core';
+import PlayIcon from '@material-ui/icons/PlayArrow';
+import PauseIcon from '@material-ui/icons/Pause';
+import JumpBackIcon from '@material-ui/icons/Replay10';
+import JumpForwardIcon from '@material-ui/icons/Forward30';
 import formatTime from '../utils/formatTime';
 
 const styles = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Button } from '@material-ui/core';
-import { RotateRight as LoadingIcon } from '@material-ui/icons';
+import LoadingIcon from '@material-ui/icons/RotateRight';
 import PodcastService from '../services/podcastService';
 
 const podcastService = new PodcastService();

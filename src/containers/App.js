@@ -20,14 +20,12 @@ class App extends Component {
   };
 
   setActiveEpisode = episode => {
-    console.log('updating active episode');
     this.setState({
       activeEpisode: episode,
     });
   };
 
   clearActiveEpisode = () => {
-    console.log('removing active episode');
     this.setState({ activeEpisode: null });
   };
 

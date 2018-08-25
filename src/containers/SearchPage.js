@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input, InputAdornment, IconButton, List, Drawer } from '@material-ui/core';
-import { Search as SearchIcon, RotateRight as LoadingIcon } from '@material-ui/icons';
+import SearchIcon from '@material-ui/icons/Search';
+import LoadingIcon from '@material-ui/icons/RotateRight';
 import PodcastService from '../services/podcastService';
 import ApiService from '../services/apiService';
 import SearchResult from '../components/SearchResult';

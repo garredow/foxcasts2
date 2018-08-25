@@ -1,5 +1,6 @@
 import React from 'react';
-import { PlayArrow as PlayIcon, Pause as PauseIcon } from '@material-ui/icons';
+import PlayIcon from '@material-ui/icons/PlayArrow';
+import PauseIcon from '@material-ui/icons/Pause';
 import { IconButton, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
