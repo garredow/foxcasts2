@@ -28,7 +28,7 @@ class SubscriptionsPage extends React.Component {
   }
   render() {
     return (
-      <div className="page-container subscriptions-page">
+      <div className="page-container">
         <List>
           {this.state.podcasts.map(podcast => (
             <PodcastRow podcast={podcast} key={podcast.id} />

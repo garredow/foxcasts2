@@ -2,7 +2,6 @@ import React from 'react';
 import { Dialog, AppBar, Toolbar, IconButton, Slide } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import EpisodeDetail from '../components/EpisodeDetail';
-import './EpisodeDialog.css';
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;

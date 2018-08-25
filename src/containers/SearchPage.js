@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input, InputAdornment, IconButton, List, Drawer } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import LoadingIcon from '@material-ui/icons/RotateRight';
 import PodcastService from '../services/podcastService';
@@ -7,10 +8,15 @@ import ApiService from '../services/apiService';
 import SearchResult from '../components/SearchResult';
 import PodcastPreview from 'components/PodcastPreview';
 import AppContext from '../components/AppContext';
-import './SearchPage.css';
 
 const apiService = new ApiService();
 const podcastService = new PodcastService();
+
+const styles = {
+  queryInput: {
+    width: '100%',
+  },
+};
 
 class SearchPage extends React.Component {
   state = {
@@ -59,6 +65,8 @@ class SearchPage extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     const searchBarIcon = this.state.searching ? (
       <LoadingIcon className="spin" />
     ) : (
@@ -68,11 +76,11 @@ class SearchPage extends React.Component {
     );
 
     return (
-      <div className="page-container search-page">
+      <div className="page-container">
         <form onSubmit={this.search}>
           <Input
             placeholder="Query"
-            className="query-input"
+            className={classes.queryInput}
             onChange={this.handleQueryChange}
             value={this.state.query}
             endAdornment={<InputAdornment>{searchBarIcon}</InputAdornment>}
@@ -100,8 +108,10 @@ class SearchPage extends React.Component {
   }
 }
 
-export default props => (
+const ComponentWithContext = props => (
   <AppContext.Consumer>
     {({ setAppTitle }) => <SearchPage {...props} setAppTitle={setAppTitle} />}
   </AppContext.Consumer>
 );
+
+export default withStyles(styles)(ComponentWithContext);

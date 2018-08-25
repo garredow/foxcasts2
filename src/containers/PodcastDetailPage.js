@@ -1,12 +1,44 @@
 import React from 'react';
 import PodcastService from '../services/podcastService';
 import { Typography, List, ListItem, ListItemText, Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import ConfirmDialog from 'components/ConfirmDialog';
 import AppContext from '../components/AppContext';
-import './PodcastDetailPage.css';
 import EpisodeDialog from 'components/EpisodeDialog';
 
 const podcastService = new PodcastService();
+
+const styles = {
+  root: {
+    padding: '10px',
+    position: 'relative',
+  },
+  backdrop: {
+    position: 'fixed',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    filter: 'blur(50px)',
+    opacity: 0.2,
+    zIndex: -1,
+  },
+  detailContainer: {
+    textAlign: 'center',
+  },
+  cover: {
+    width: '100%',
+    maxWidth: '300px',
+    padding: '15px 15px 25px 15px',
+  },
+  actionsContainer: {
+    textAlign: 'center',
+    margin: '10px 0 20px 0',
+  },
+};
 
 const EpisodeRow = ({ episode, onClick }) => (
   <ListItem button onClick={onClick}>
@@ -59,19 +91,23 @@ class PodcastDetailPage extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
     const podcast = this.state.podcast;
 
     if (!podcast) return null;
 
     return (
-      <div className="page-container podcast-detail-page">
-        <div className="background" style={{ backgroundImage: `url(${podcast.cover['600']})` }} />
-        <div className="detail-container">
-          <img className="cover" src={podcast.cover['600']} alt={podcast.title} />
+      <div className={classes.root}>
+        <div
+          className={classes.backdrop}
+          style={{ backgroundImage: `url(${podcast.cover['600']})` }}
+        />
+        <div className={classes.detailContainer}>
+          <img className={classes.cover} src={podcast.cover['600']} alt={podcast.title} />
           <Typography variant="headline">{podcast.title}</Typography>
           <Typography variant="subheading">{podcast.author}</Typography>
         </div>
-        <div className="episodes-container">
+        <div>
           <List>
             {podcast.episodes.map(episode => (
               <EpisodeRow
@@ -82,7 +118,7 @@ class PodcastDetailPage extends React.Component {
             ))}
           </List>
         </div>
-        <div className="actions-container">
+        <div className={classes.actionsContainer}>
           <Button variant="outlined" color="secondary" onClick={this.promptConfirm}>
             Unsubscribe
           </Button>
@@ -104,10 +140,12 @@ class PodcastDetailPage extends React.Component {
   }
 }
 
-export default props => (
+const ComponentWithContext = props => (
   <AppContext.Consumer>
     {({ setAppTitle, setActiveEpisode }) => (
       <PodcastDetailPage {...props} setAppTitle={setAppTitle} setActiveEpisode={setActiveEpisode} />
     )}
   </AppContext.Consumer>
 );
+
+export default withStyles(styles)(ComponentWithContext);

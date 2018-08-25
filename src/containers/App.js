@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
-import './App.css';
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import SideNav from 'components/SideNav';
 import MenuIcon from '@material-ui/icons/Menu';
 import Routes from '../router';
 import { BrowserRouter } from 'react-router-dom';
 import AppContext from '../components/AppContext';
 import Player from './Player';
+
+const styles = {
+  routeContainer: {
+    paddingBottom: '30px',
+    marginBottom: '30px',
+  },
+};
 
 class App extends Component {
   state = {
@@ -34,6 +41,8 @@ class App extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     return (
       <BrowserRouter>
         <AppContext.Provider
@@ -48,7 +57,7 @@ class App extends Component {
               <Typography variant="title">{this.state.appTitle}</Typography>
             </Toolbar>
           </AppBar>
-          <div className="route-container">
+          <div className={classes.routeContainer}>
             <Routes />
           </div>
           <Player episode={this.state.activeEpisode} onStopPlayback={this.clearActiveEpisode} />
@@ -58,4 +67,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withStyles(styles)(App);

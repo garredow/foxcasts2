@@ -1,3 +1,5 @@
+/* General styles */
+
 body {
   margin: 0;
   padding: 0;
@@ -10,6 +12,15 @@ a {
 
 .page-container {
   padding: 10px;
+}
+
+.app-bar {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.app-bar .menu-icon {
+  margin: 0 20px 0 -12px;
 }
 
 .spin {
@@ -25,7 +36,14 @@ a {
   }
 }
 
-/* Some commonly used styles */
+@supports (-webkit-backdrop-filter: blur(50px)) {
+  .dialog-background {
+    -webkit-backdrop-filter: blur(50px);
+    background: none !important;
+  }
+}
+
+/* Some frequently used styles */
 
 .text-center {
   text-align: center;

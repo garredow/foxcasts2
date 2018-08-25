@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import LoadingIcon from '@material-ui/icons/RotateRight';
 import PodcastService from '../services/podcastService';
 
@@ -39,14 +40,14 @@ class PodcastPreview extends React.Component {
   };
 
   render() {
-    const { podcast } = this.props;
+    const { classes, podcast } = this.props;
     return (
       <React.Fragment>
-        <div style={styles.container}>
-          <img src={podcast.artworkUrl600} style={styles.cover} alt={podcast.collectionName} />
+        <div className={classes.container}>
+          <img src={podcast.artworkUrl600} className={classes.cover} alt={podcast.collectionName} />
           <Typography variant="title">{podcast.collectionName}</Typography>
           <Typography variant="subheading">{podcast.artistName}</Typography>
-          <div style={styles.actions}>
+          <div className={classes.actions}>
             <Button
               variant="outlined"
               onClick={this.subscribe(podcast.collectionId)}
@@ -67,4 +68,4 @@ class PodcastPreview extends React.Component {
   }
 }
 
-export default PodcastPreview;
+export default withStyles(styles)(PodcastPreview);
