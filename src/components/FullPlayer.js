@@ -28,6 +28,19 @@ const styles = {
     justifyContent: 'space-between',
     marginTop: '10px',
   },
+  controls: {
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    marginBottom: '20px',
+  },
+  playbackButton: {
+    height: '64px',
+    width: '64px',
+  },
+  playbackButtonIcon: {
+    height: '64px',
+    width: '64px',
+  },
 };
 
 class FullPlayer extends React.Component {
@@ -72,15 +85,19 @@ class FullPlayer extends React.Component {
             <Typography>-{formatTime(duration - progress)}</Typography>
           </div>
         </div>
-        <div className="controls">
-          <IconButton onClick={this.handleJumpBack}>
-            <JumpBackIcon />
+        <div className={classes.controls}>
+          <IconButton className={classes.playbackButton} onClick={this.handleJumpBack}>
+            <JumpBackIcon className={classes.playbackButtonIcon} />
           </IconButton>
-          <IconButton onClick={this.props.onTogglePlaying}>
-            {isPlaying ? <PauseIcon /> : <PlayIcon />}
+          <IconButton className={classes.playbackButton} onClick={this.props.onTogglePlaying}>
+            {isPlaying ? (
+              <PauseIcon className={classes.playbackButtonIcon} />
+            ) : (
+              <PlayIcon className={classes.playbackButtonIcon} />
+            )}
           </IconButton>
-          <IconButton onClick={this.handleJumpForward}>
-            <JumpForwardIcon />
+          <IconButton className={classes.playbackButton} onClick={this.handleJumpForward}>
+            <JumpForwardIcon className={classes.playbackButtonIcon} />
           </IconButton>
         </div>
         <Button variant="outlined" color="secondary" onClick={this.props.onCloseEpisode}>
