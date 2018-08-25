@@ -6,15 +6,29 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Routes from '../router';
 import { BrowserRouter } from 'react-router-dom';
 import AppContext from '../components/AppContext';
+import Player from './Player';
 
 class App extends Component {
   state = {
     navOpen: false,
     appTitle: 'FoxCasts',
+    activeEpisode: null,
   };
 
   setAppTitle = title => {
     this.setState({ appTitle: title });
+  };
+
+  setActiveEpisode = episode => {
+    console.log('updating active episode');
+    this.setState({
+      activeEpisode: episode,
+    });
+  };
+
+  clearActiveEpisode = () => {
+    console.log('removing active episode');
+    this.setState({ activeEpisode: null });
   };
 
   toggleNav = open => () => {
@@ -24,7 +38,9 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <AppContext.Provider value={{ setAppTitle: this.setAppTitle }}>
+        <AppContext.Provider
+          value={{ setAppTitle: this.setAppTitle, setActiveEpisode: this.setActiveEpisode }}
+        >
           <SideNav open={this.state.navOpen} onClose={this.toggleNav(false)} />
           <AppBar position="sticky" color="default" className="app-bar">
             <Toolbar>
@@ -34,7 +50,10 @@ class App extends Component {
               <Typography variant="title">{this.state.appTitle}</Typography>
             </Toolbar>
           </AppBar>
-          <Routes />
+          <div className="route-container">
+            <Routes />
+          </div>
+          <Player episode={this.state.activeEpisode} onStopPlayback={this.clearActiveEpisode} />
         </AppContext.Provider>
       </BrowserRouter>
     );
