@@ -20,21 +20,32 @@ class Player extends React.Component {
     duration: 0,
   };
 
-  componentDidUpdate(prevProps) {
-    const isNewEpisode =
-      (prevProps.episode && prevProps.episode.id) !== (this.props.episode && this.props.episode.id);
+  componentDidUpdate({ episode: previousEpisode }) {
+    const episode = this.props.episode;
+    if (!episode) return;
+
+    const isNewEpisode = !previousEpisode || previousEpisode.id !== episode.id;
 
     if (isNewEpisode) {
-      const progress = this.props.episode.progress;
+      const progress = episode.progress;
       this.audioRef.audioEl.currentTime = progress;
       this.setState({
         isSmallPlayer: true,
         isPlaying: false,
         progress,
-        duration: this.props.episode.duration,
+        duration: episode.duration,
       });
     }
   }
+
+  resetPlayerState = () => {
+    this.setState({
+      isSmallPlayer: true,
+      isPlaying: false,
+      progress: 0,
+      duration: 0,
+    });
+  };
 
   handleTogglePlaying = ev => {
     ev.stopPropagation();
@@ -45,11 +56,8 @@ class Player extends React.Component {
   };
 
   handleCloseEpisode = () => {
+    this.resetPlayerState();
     this.props.onStopPlayback();
-    this.setState({
-      isSmallPlayer: true,
-      isPlaying: false,
-    });
   };
 
   openFullView = () => {
