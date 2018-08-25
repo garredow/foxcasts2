@@ -62,6 +62,11 @@ class DatabaseService {
   async getPlaylist(playlist) {
     return [];
   }
+
+  async updateEpisode(episodeId, changes) {
+    const updatedEpisode = await this.db.episodes.update(episodeId, changes);
+    return updatedEpisode;
+  }
 }
 
 export default DatabaseService;

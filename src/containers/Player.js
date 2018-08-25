@@ -4,6 +4,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import AudioPlayer from 'react-audio-player';
 import MiniPlayer from 'components/MiniPlayer';
 import FullPlayer from 'components/FullPlayer';
+import PodcastService from '../services/podcastService';
+
+const podcastService = new PodcastService();
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -22,11 +25,13 @@ class Player extends React.Component {
       (prevProps.episode && prevProps.episode.id) !== (this.props.episode && this.props.episode.id);
 
     if (isNewEpisode) {
+      const progress = this.props.episode.progress;
+      this.audioRef.audioEl.currentTime = progress;
       this.setState({
         isSmallPlayer: true,
         isPlaying: false,
-        progress: 0,
-        duration: 0,
+        progress,
+        duration: this.props.episode.duration,
       });
     }
   }
@@ -56,16 +61,23 @@ class Player extends React.Component {
   };
 
   handleProgressChanged = progress => {
+    progress = Math.ceil(progress);
+    podcastService.updateEpisode(this.props.episode.id, { progress });
+
     if (!this.state.isSmallPlayer) {
       this.setState({ progress });
     }
   };
 
   handleLoadedMetadata = ev => {
-    this.setState({
-      progress: ev.target.currentTime,
-      duration: ev.target.duration,
-    });
+    const progress = this.props.episode.progress || 0;
+    const duration = Math.ceil(ev.target.duration);
+
+    if (duration !== this.props.episode.duration) {
+      podcastService.updateEpisode(this.props.episode.id, { duration });
+    }
+
+    this.setState({ progress, duration });
   };
 
   handleSeek = newTime => {

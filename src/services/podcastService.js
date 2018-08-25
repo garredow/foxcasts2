@@ -42,6 +42,15 @@ class PodcastService {
     const podcast = await databaseService.getPodcastById(id, includeEpisodes);
     return podcast;
   }
+
+  async updateEpisode(episodeId, changes) {
+    try {
+      const updatedEpisode = await databaseService.updateEpisode(episodeId, changes);
+      return updatedEpisode;
+    } catch (err) {
+      console.error(`Error updating episode ${episodeId}`, err);
+    }
+  }
 }
 
 export default PodcastService;

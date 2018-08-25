@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, Button } from '@material-ui/core';
+import formatTime from '../utils/formatTime';
 
 import './EpisodeDetail.css';
 
@@ -17,7 +18,7 @@ class EpisodeDetail extends React.Component {
         </div>
         <div className="actions-container">
           <Button variant="outlined" onClick={this.props.onStream}>
-            Stream
+            {episode.progress > 0 ? `Resume at ${formatTime(episode.progress)}` : 'Play'}
           </Button>
         </div>
         <Typography variant="body1">{episode.subTitle}</Typography>
