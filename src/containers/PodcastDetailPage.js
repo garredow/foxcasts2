@@ -1,15 +1,15 @@
 import React from 'react';
 import PodcastService from '../services/podcastService';
-import { Typography } from '@material-ui/core';
-import { List, ListItem, ListItemText, Button } from '@material-ui/core';
+import { Typography, List, ListItem, ListItemText, Button } from '@material-ui/core';
 import ConfirmDialog from 'components/ConfirmDialog';
 import AppContext from '../components/AppContext';
 import './PodcastDetailPage.css';
+import EpisodeDialog from 'components/EpisodeDialog';
 
 const podcastService = new PodcastService();
 
 const EpisodeRow = ({ episode, onClick }) => (
-  <ListItem button>
+  <ListItem button onClick={onClick}>
     <ListItemText primary={episode.title} secondary={episode.date} />
   </ListItem>
 );
@@ -18,16 +18,17 @@ class PodcastDetailPage extends React.Component {
   state = {
     podcast: null,
     confirmDialogOpen: false,
+    selectedEpisode: null,
   };
 
   async componentDidMount() {
     this.props.setAppTitle('');
 
-    if (!this.props.match.params.id) {
+    const podcastId = this.props.match.params.id;
+    if (!podcastId) {
       return;
     }
 
-    const podcastId = this.props.match.params.id;
     const podcast = await podcastService.getPodcastById(podcastId, true);
     this.setState({ podcast });
   }
@@ -41,6 +42,20 @@ class PodcastDetailPage extends React.Component {
       podcastService.unsubscribe(this.state.podcast.id);
     }
     this.setState({ confirmDialogOpen: false });
+  };
+
+  setSelectedEpisode = episode => () => {
+    const episodeWithDetail = { ...episode, cover: this.state.podcast.cover };
+    this.setState({ selectedEpisode: episodeWithDetail });
+  };
+
+  clearSelectedEpisode = () => {
+    this.setState({ selectedEpisode: null });
+  };
+
+  handleStream = () => {
+    this.clearSelectedEpisode();
+    this.props.setActiveEpisode(this.state.selectedEpisode);
   };
 
   render() {
@@ -59,7 +74,11 @@ class PodcastDetailPage extends React.Component {
         <div className="episodes-container">
           <List>
             {podcast.episodes.map(episode => (
-              <EpisodeRow episode={episode} key={episode.id} />
+              <EpisodeRow
+                episode={episode}
+                key={episode.id}
+                onClick={this.setSelectedEpisode(episode)}
+              />
             ))}
           </List>
         </div>
@@ -74,6 +93,12 @@ class PodcastDetailPage extends React.Component {
           open={this.state.confirmDialogOpen}
           onClose={this.onDialogClose}
         />
+        <EpisodeDialog
+          episode={this.state.selectedEpisode}
+          open={!!this.state.selectedEpisode}
+          onClose={this.clearSelectedEpisode}
+          onStream={this.handleStream}
+        />
       </div>
     );
   }
@@ -81,6 +106,8 @@ class PodcastDetailPage extends React.Component {
 
 export default props => (
   <AppContext.Consumer>
-    {({ setAppTitle }) => <PodcastDetailPage {...props} setAppTitle={setAppTitle} />}
+    {({ setAppTitle, setActiveEpisode }) => (
+      <PodcastDetailPage {...props} setAppTitle={setAppTitle} setActiveEpisode={setActiveEpisode} />
+    )}
   </AppContext.Consumer>
 );
