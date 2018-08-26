@@ -1,6 +1,9 @@
 import React from 'react';
 import PodcastService from '../services/podcastService';
-import { List, ListItem, ListItemText, Avatar } from '@material-ui/core';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
 import { Link } from 'react-router-dom';
 import AppContext from '../components/AppContext';
 

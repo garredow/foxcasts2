@@ -1,5 +1,7 @@
 import React from 'react';
-import { ListItem, ListItemText, Avatar } from '@material-ui/core';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
 
 const SearchResult = ({ podcast, onClick }) => (
   <ListItem button onClick={onClick}>

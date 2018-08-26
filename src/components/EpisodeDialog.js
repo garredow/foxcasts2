@@ -1,5 +1,9 @@
 import React from 'react';
-import { Dialog, AppBar, Toolbar, IconButton, Slide } from '@material-ui/core';
+import Dialog from '@material-ui/core/Dialog';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Slide from '@material-ui/core/Slide';
 import CloseIcon from '@material-ui/icons/Close';
 import EpisodeDetail from '../components/EpisodeDetail';
 

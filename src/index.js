@@ -4,7 +4,7 @@ import './index.css';
 import App from 'containers/App';
 import registerServiceWorker from './registerServiceWorker';
 // import 'typeface-roboto';
-import { CssBaseline } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({

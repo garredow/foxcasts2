@@ -1,12 +1,10 @@
 import React from 'react';
-import {
-  Input,
-  InputAdornment,
-  IconButton,
-  List,
-  Drawer,
-  CircularProgress,
-} from '@material-ui/core';
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import Drawer from '@material-ui/core/Drawer';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import PodcastService from '../services/podcastService';
