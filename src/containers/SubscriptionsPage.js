@@ -1,20 +1,27 @@
 import React from 'react';
 import PodcastService from '../services/podcastService';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
 import { Link } from 'react-router-dom';
 import AppContext from '../components/AppContext';
+import { withStyles } from '@material-ui/core/styles';
 
 const podcastService = new PodcastService();
 
-const PodcastRow = ({ podcast }) => (
-  <Link to={{ pathname: `/podcast/${podcast.id}` }}>
-    <ListItem button>
-      <Avatar src={podcast.cover['100']} />
-      <ListItemText primary={podcast.title} secondary={podcast.author} />
-    </ListItem>
+const styles = {
+  gridList: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(96px, 1fr))',
+    gridAutoRows: '1fr',
+    gridGap: '5px',
+  },
+  tile: {
+    paddingBottom: '100%',
+    backgroundSize: 'contain',
+  },
+};
+
+const PodcastTile = ({ classes, podcast }) => (
+  <Link to={{ pathname: `/podcast/${podcast.id}` }} rel="div">
+    <div className={classes.tile} style={{ backgroundImage: `url(${podcast.cover['600']}` }} />
   </Link>
 );
 
@@ -30,20 +37,24 @@ class SubscriptionsPage extends React.Component {
       .catch(err => console.error('Failed to get podcasts', err));
   }
   render() {
+    const { classes } = this.props;
+
     return (
       <div className="page-container">
-        <List>
+        <div className={classes.gridList}>
           {this.state.podcasts.map(podcast => (
-            <PodcastRow podcast={podcast} key={podcast.id} />
+            <PodcastTile classes={classes} podcast={podcast} key={podcast.id} />
           ))}
-        </List>
+        </div>
       </div>
     );
   }
 }
 
-export default props => (
+const ComponentWithContext = props => (
   <AppContext.Consumer>
     {({ setAppTitle }) => <SubscriptionsPage {...props} setAppTitle={setAppTitle} />}
   </AppContext.Consumer>
 );
+
+export default withStyles(styles)(ComponentWithContext);
