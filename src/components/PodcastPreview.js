@@ -1,12 +1,12 @@
 import React from 'react';
-import { Typography, Button } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import LoadingIcon from '@material-ui/icons/RotateRight';
 import PodcastService from '../services/podcastService';
+import ProgressButton from './ProgressButton';
 
 const podcastService = new PodcastService();
 
-const styles = {
+const styles = theme => ({
   container: {
     padding: '15px',
     maxHeight: '75vh',
@@ -21,7 +21,7 @@ const styles = {
   cover: {
     width: '100%',
   },
-};
+});
 
 class PodcastPreview extends React.Component {
   state = { subscribing: false, subscribed: false };
@@ -48,14 +48,14 @@ class PodcastPreview extends React.Component {
           <Typography variant="title">{podcast.collectionName}</Typography>
           <Typography variant="subheading">{podcast.artistName}</Typography>
           <div className={classes.actions}>
-            <Button
+            <ProgressButton
               variant="outlined"
-              onClick={this.subscribe(podcast.collectionId)}
               disabled={this.state.subscribing || this.state.subscribed}
+              loading={this.state.subscribing}
+              onClick={this.subscribe(podcast.collectionId)}
             >
               {this.state.subscribed ? 'Subscribed' : 'Subscribe'}
-              {this.state.subscribing && <LoadingIcon className="spin" />}
-            </Button>
+            </ProgressButton>
           </div>
           <Typography variant="body1">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi feugiat tortor ut tempor

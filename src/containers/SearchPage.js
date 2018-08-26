@@ -1,8 +1,14 @@
 import React from 'react';
-import { Input, InputAdornment, IconButton, List, Drawer } from '@material-ui/core';
+import {
+  Input,
+  InputAdornment,
+  IconButton,
+  List,
+  Drawer,
+  CircularProgress,
+} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import LoadingIcon from '@material-ui/icons/RotateRight';
 import PodcastService from '../services/podcastService';
 import ApiService from '../services/apiService';
 import SearchResult from '../components/SearchResult';
@@ -68,7 +74,7 @@ class SearchPage extends React.Component {
     const { classes } = this.props;
 
     const searchBarIcon = this.state.searching ? (
-      <LoadingIcon className="spin" />
+      <CircularProgress size={24} color="primary" />
     ) : (
       <IconButton type="submit">
         <SearchIcon />
