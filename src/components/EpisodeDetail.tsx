@@ -3,15 +3,22 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import formatTime from '../utils/formatTime';
+import { Episode } from '../models';
 
-const styles = {
+const styles: any = {
   container: {
     textAlign: 'center',
     marginBottom: '15px',
   },
 };
 
-class EpisodeDetail extends React.Component {
+interface Props {
+  classes: any;
+  episode: Episode;
+  onStream: (event: any) => void;
+}
+
+class EpisodeDetail extends React.Component<Props, any> {
   render() {
     const { classes, episode } = this.props;
 

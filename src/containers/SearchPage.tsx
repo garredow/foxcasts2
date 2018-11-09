@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { SyntheticEvent, FormEvent, DetailedHTMLFactory } from 'react';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
@@ -10,23 +10,35 @@ import SearchIcon from '@material-ui/icons/Search';
 import PodcastService from '../services/podcastService';
 import ApiService from '../services/apiService';
 import SearchResult from '../components/SearchResult';
-import PodcastPreview from 'components/PodcastPreview';
+import PodcastPreview from '../components/PodcastPreview';
 import AppContext from '../components/AppContext';
+import { AppContextProps, ITunesPodcast } from '../models';
 
 const apiService = new ApiService();
 const podcastService = new PodcastService();
 
-const styles = {
+const styles: any = {
   queryInput: {
     width: '100%',
   },
 };
 
-class SearchPage extends React.Component {
-  state = {
+interface Props extends AppContextProps {
+  classes: any;
+}
+
+interface State {
+  query: string;
+  searchResults: any[];
+  selectedPodcast?: ITunesPodcast;
+  drawerOpen: boolean;
+  searching: boolean;
+}
+
+class SearchPage extends React.Component<Props, State> {
+  state: State = {
     query: '',
     searchResults: [],
-    selectedPodcast: null,
     drawerOpen: false,
     searching: false,
   };
@@ -35,11 +47,11 @@ class SearchPage extends React.Component {
     this.props.setAppTitle('Search');
   }
 
-  handleQueryChange = ev => {
-    this.setState({ query: ev.target.value });
+  handleQueryChange = (ev: any) => {
+    this.setState({ query: ev.currentTarget.value });
   };
 
-  search = ev => {
+  search = (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
 
     if (!this.state.query) {
@@ -54,17 +66,17 @@ class SearchPage extends React.Component {
       .finally(() => this.setState({ searching: false }));
   };
 
-  viewDetail = podcast => () => {
+  viewDetail = (podcast: ITunesPodcast) => () => {
     console.log(podcast);
     this.setState({ selectedPodcast: podcast });
     this.toggleDrawer(true)();
   };
 
-  toggleDrawer = open => () => {
+  toggleDrawer = (open: boolean) => () => {
     this.setState({ drawerOpen: open });
   };
 
-  subscribe = podcastId => () => {
+  subscribe = (podcastId: number) => () => {
     podcastService.subscribe(podcastId);
   };
 
@@ -87,7 +99,7 @@ class SearchPage extends React.Component {
             className={classes.queryInput}
             onChange={this.handleQueryChange}
             value={this.state.query}
-            endAdornment={<InputAdornment>{searchBarIcon}</InputAdornment>}
+            endAdornment={<InputAdornment position="end">{searchBarIcon}</InputAdornment>}
           />
         </form>
         <List>
@@ -112,9 +124,9 @@ class SearchPage extends React.Component {
   }
 }
 
-const ComponentWithContext = props => (
+const ComponentWithContext = (props: any) => (
   <AppContext.Consumer>
-    {({ setAppTitle }) => <SearchPage {...props} setAppTitle={setAppTitle} />}
+    {({ setAppTitle }: any) => <SearchPage {...props} setAppTitle={setAppTitle} />}
   </AppContext.Consumer>
 );
 

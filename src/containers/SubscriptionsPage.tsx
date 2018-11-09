@@ -3,10 +3,11 @@ import PodcastService from '../services/podcastService';
 import { Link } from 'react-router-dom';
 import AppContext from '../components/AppContext';
 import { withStyles } from '@material-ui/core/styles';
+import { Podcast, AppContextProps } from '../models';
 
 const podcastService = new PodcastService();
 
-const styles = {
+const styles: any = {
   gridList: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(96px, 1fr))',
@@ -19,14 +20,27 @@ const styles = {
   },
 };
 
-const PodcastTile = ({ classes, podcast }) => (
+interface PodcastTileProps {
+  classes: any;
+  podcast: Podcast;
+}
+
+const PodcastTile = ({ classes, podcast }: PodcastTileProps) => (
   <Link to={{ pathname: `/podcast/${podcast.id}` }} rel="div">
     <div className={classes.tile} style={{ backgroundImage: `url(${podcast.cover['600']}` }} />
   </Link>
 );
 
-class SubscriptionsPage extends React.Component {
-  state = { podcasts: [] };
+interface Props extends AppContextProps {
+  classes: any;
+}
+
+interface State {
+  podcasts: Podcast[];
+}
+
+class SubscriptionsPage extends React.Component<Props, State> {
+  state: State = { podcasts: [] };
 
   componentDidMount() {
     this.props.setAppTitle('Subscriptions');
@@ -51,9 +65,9 @@ class SubscriptionsPage extends React.Component {
   }
 }
 
-const ComponentWithContext = props => (
+const ComponentWithContext = (props: any) => (
   <AppContext.Consumer>
-    {({ setAppTitle }) => <SubscriptionsPage {...props} setAppTitle={setAppTitle} />}
+    {({ setAppTitle }: any) => <SubscriptionsPage {...props} setAppTitle={setAppTitle} />}
   </AppContext.Consumer>
 );
 

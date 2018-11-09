@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import Loading from 'components/Loading';
+import PlaylistPage from './containers/PlaylistPage';
 
 const SubscriptionsPage = Loadable({
   loader: () => import('./containers/SubscriptionsPage'),
@@ -26,6 +27,7 @@ const Router = () => (
     <Route exact path="/" component={SubscriptionsPage} />
     <Route path="/search" component={SearchPage} />
     <Route path="/podcast/:id" component={PodcastDetailPage} />
+    <Route path="/playlist/:playlist" component={PlaylistPage} />
     <Route component={SubscriptionsPage} />
   </Switch>
 );

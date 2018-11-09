@@ -1,20 +1,24 @@
 import ApiService from './apiService';
 import DatabaseService from './databaseService';
+import { Episode, Podcast } from '../models';
 
 const apiService = new ApiService();
 const databaseService = new DatabaseService();
 
 class PodcastService {
-  async subscribe(podcastId) {
+  async subscribe(podcastId: number): Promise<void> {
     try {
       const podcast = await apiService.getPodcastById(podcastId);
       const episodes = await apiService.getEpisodes(podcast.feedUrl).then(results => {
-        return results.map(episode => ({
-          ...episode,
-          authorId: podcast.authorId,
-          author: episode.author || podcast.author,
-          podcastId: podcast.id,
-        }));
+        return results.map(
+          episode =>
+            ({
+              ...episode,
+              authorId: podcast.authorId,
+              author: episode.author || podcast.author,
+              podcastId: podcast.id,
+            } as Episode)
+        );
       });
 
       await databaseService.addPodcast(podcast, episodes);
@@ -24,7 +28,7 @@ class PodcastService {
     }
   }
 
-  async unsubscribe(podcastId) {
+  async unsubscribe(podcastId: number): Promise<void> {
     try {
       await databaseService.deletePodcast(podcastId);
     } catch (err) {
@@ -33,20 +37,19 @@ class PodcastService {
     }
   }
 
-  async getSubscriptions() {
+  async getSubscriptions(): Promise<Podcast[]> {
     const podcasts = databaseService.getPodcasts();
     return podcasts;
   }
 
-  async getPodcastById(id, includeEpisodes) {
+  async getPodcastById(id: number, includeEpisodes: boolean = false): Promise<Podcast> {
     const podcast = await databaseService.getPodcastById(id, includeEpisodes);
     return podcast;
   }
 
-  async updateEpisode(episodeId, changes) {
+  async updateEpisode(episodeId: number, changes: any): Promise<void> {
     try {
       const updatedEpisode = await databaseService.updateEpisode(episodeId, changes);
-      return updatedEpisode;
     } catch (err) {
       console.error(`Error updating episode ${episodeId}`, err);
     }

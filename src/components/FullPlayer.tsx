@@ -9,8 +9,9 @@ import PauseIcon from '@material-ui/icons/Pause';
 import JumpBackIcon from '@material-ui/icons/Replay10';
 import JumpForwardIcon from '@material-ui/icons/Forward30';
 import formatTime from '../utils/formatTime';
+import { Episode, EpisodeExtended } from '../models';
 
-const styles = {
+const styles: any = {
   root: {
     textAlign: 'center',
     padding: '15px',
@@ -46,10 +47,21 @@ const styles = {
   },
 };
 
-class FullPlayer extends React.Component {
-  handleBarClick = ev => {
-    const progressBarWidth = ev.target.clientWidth;
-    const clickedAt = ev.clientX - ev.target.offsetLeft;
+interface Props {
+  classes: any;
+  duration: number;
+  progress: number;
+  isPlaying: boolean;
+  episode: EpisodeExtended;
+  onSeek: (time: number) => void;
+  onTogglePlaying: (ev: any) => void;
+  onCloseEpisode: (ev: any) => void;
+}
+
+class FullPlayer extends React.Component<Props, any> {
+  handleBarClick = (ev: React.MouseEvent<HTMLDivElement>) => {
+    const progressBarWidth = ev.currentTarget.clientWidth;
+    const clickedAt = ev.clientX - ev.currentTarget.offsetLeft;
     const percentage = clickedAt / progressBarWidth;
     const newTime = this.props.duration * percentage;
 

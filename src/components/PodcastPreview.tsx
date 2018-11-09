@@ -3,10 +3,11 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import PodcastService from '../services/podcastService';
 import ProgressButton from './ProgressButton';
+import { ITunesPodcast } from '../models';
 
 const podcastService = new PodcastService();
 
-const styles = theme => ({
+const styles: any = (theme: any) => ({
   container: {
     padding: '15px',
     maxHeight: '75vh',
@@ -23,7 +24,18 @@ const styles = theme => ({
   },
 });
 
-class PodcastPreview extends React.Component {
+interface Props {
+  classes: any;
+  podcast: ITunesPodcast;
+  onSubscribe: () => void;
+}
+
+interface State {
+  subscribing: boolean;
+  subscribed: boolean;
+}
+
+class PodcastPreview extends React.Component<Props, State> {
   state = { subscribing: false, subscribed: false };
 
   componentDidMount() {
@@ -32,7 +44,7 @@ class PodcastPreview extends React.Component {
     });
   }
 
-  subscribe = podcastId => () => {
+  subscribe = (podcastId: number) => () => {
     this.setState({ subscribing: true });
     podcastService.subscribe(podcastId).then(() => {
       this.setState({ subscribing: false, subscribed: true });

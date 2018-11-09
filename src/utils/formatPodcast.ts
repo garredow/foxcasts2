@@ -1,5 +1,7 @@
-const formatPodcast = rawPodcast => {
-  const podcast = {
+import { ITunesPodcast, Podcast } from '../models';
+
+const formatPodcast = (rawPodcast: ITunesPodcast): Podcast => {
+  const podcast: Podcast = {
     id: rawPodcast.collectionId,
     authorId: rawPodcast.artistId,
     title: rawPodcast.collectionName,

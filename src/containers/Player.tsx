@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
@@ -6,17 +6,30 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CloseIcon from '@material-ui/icons/Close';
 import AudioPlayer from 'react-audio-player';
-import MiniPlayer from 'components/MiniPlayer';
-import FullPlayer from 'components/FullPlayer';
 import PodcastService from '../services/podcastService';
+import { EpisodeExtended } from '../models';
+import MiniPlayer from '../components/MiniPlayer';
+import FullPlayer from '../components/FullPlayer';
 
 const podcastService = new PodcastService();
 
-function Transition(props) {
+interface Props {
+  episode?: EpisodeExtended;
+  onStopPlayback: () => void;
+}
+
+interface State {
+  isPlaying: boolean;
+  isSmallPlayer: boolean;
+  progress: number;
+  duration: number;
+}
+
+function Transition(props: Props) {
   return <Slide direction="up" {...props} />;
 }
 
-class Player extends React.Component {
+class Player extends React.Component<Props, State> {
   state = {
     isPlaying: false,
     isSmallPlayer: true,
@@ -24,7 +37,9 @@ class Player extends React.Component {
     duration: 0,
   };
 
-  componentDidUpdate({ episode: previousEpisode }) {
+  audioRef: any;
+
+  componentDidUpdate({ episode: previousEpisode }: any) {
     const episode = this.props.episode;
     if (!episode) return;
 
@@ -51,7 +66,7 @@ class Player extends React.Component {
     });
   };
 
-  handleTogglePlaying = ev => {
+  handleTogglePlaying = (ev: MouseEvent) => {
     ev.stopPropagation();
 
     const isPlaying = !this.state.isPlaying;
@@ -72,7 +87,9 @@ class Player extends React.Component {
     this.setState({ isSmallPlayer: true });
   };
 
-  handleProgressChanged = progress => {
+  handleProgressChanged = (progress: number) => {
+    if (!this.props.episode) return;
+
     progress = Math.ceil(progress);
     podcastService.updateEpisode(this.props.episode.id, { progress });
 
@@ -81,9 +98,11 @@ class Player extends React.Component {
     }
   };
 
-  handleLoadedMetadata = ev => {
+  handleLoadedMetadata = (ev: SyntheticEvent<HTMLAudioElement>) => {
+    if (!this.props.episode) return;
+
     const progress = this.props.episode.progress || 0;
-    const duration = Math.ceil(ev.target.duration);
+    const duration = Math.ceil(ev.currentTarget.duration);
 
     if (duration !== this.props.episode.duration) {
       podcastService.updateEpisode(this.props.episode.id, { duration });
@@ -92,7 +111,7 @@ class Player extends React.Component {
     this.setState({ progress, duration });
   };
 
-  handleSeek = newTime => {
+  handleSeek = (newTime: number) => {
     this.setState({ progress: newTime });
     this.audioRef.audioEl.currentTime = newTime;
   };
@@ -140,7 +159,7 @@ class Player extends React.Component {
           onListen={this.handleProgressChanged}
           onLoadedMetadata={this.handleLoadedMetadata}
           src={episode.fileUrl}
-          ref={element => {
+          ref={(element: any) => {
             this.audioRef = element;
           }}
         />

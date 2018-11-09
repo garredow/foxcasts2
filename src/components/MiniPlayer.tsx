@@ -4,8 +4,9 @@ import PauseIcon from '@material-ui/icons/Pause';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import { EpisodeExtended } from '../models';
 
-const styles = {
+const styles: any = {
   root: {
     position: 'fixed',
     bottom: 0,
@@ -30,7 +31,15 @@ const styles = {
   },
 };
 
-class MiniPlayer extends React.Component {
+interface Props {
+  classes: any;
+  episode: EpisodeExtended;
+  isPlaying: boolean;
+  onClick: (ev: React.MouseEvent<HTMLDivElement>) => void;
+  onTogglePlaying: (ev: any) => void;
+}
+
+class MiniPlayer extends React.Component<Props, any> {
   render() {
     const { classes, episode } = this.props;
     if (!episode) return null;

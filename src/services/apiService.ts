@@ -1,7 +1,8 @@
 import axios from 'axios';
 import formatPodcast from '../utils/formatPodcast';
+import { Episode, ITunesPodcast, Podcast } from '../models';
 
-const getDurationInSeconds = duration => {
+const getDurationInSeconds = (duration: string) => {
   if (typeof duration === 'number') return duration;
 
   if (!duration.includes(':')) {
@@ -17,50 +18,60 @@ const getDurationInSeconds = duration => {
   return seconds;
 };
 
-const parseXmlEpisodes = xmlString => {
+const parseXmlEpisodes = (xmlString: string): Episode[] => {
   const xml = new DOMParser().parseFromString(xmlString, 'text/xml');
 
   const recentEpisodes = Array.from(xml.getElementsByTagName('item')).slice(0, 30); // TODO: Remove temporary limit?
-  const episodes = recentEpisodes.map(episode => {
+
+  const episodes: Episode[] = [];
+
+  recentEpisodes.forEach(rawEpisode => {
     const authorNode =
-      episode.getElementsByTagName('itunes:author')[0] || episode.getElementsByTagName('author')[0];
+      rawEpisode.getElementsByTagName('itunes:author')[0] ||
+      rawEpisode.getElementsByTagName('author')[0];
     const descriptionNode =
-      episode.getElementsByTagName('itunes:description')[0] ||
-      episode.getElementsByTagName('description')[0];
+      rawEpisode.getElementsByTagName('itunes:description')[0] ||
+      rawEpisode.getElementsByTagName('description')[0];
     const titleNode =
-      episode.getElementsByTagName('itunes:title')[0] || episode.getElementsByTagName('title')[0];
+      rawEpisode.getElementsByTagName('itunes:title')[0] ||
+      rawEpisode.getElementsByTagName('title')[0];
     const subTitleNode =
-      episode.getElementsByTagName('itunes:subtitle')[0] ||
-      episode.getElementsByTagName('subtitle')[0];
+      rawEpisode.getElementsByTagName('itunes:subtitle')[0] ||
+      rawEpisode.getElementsByTagName('subtitle')[0];
     const durationNode =
-      episode.getElementsByTagName('itunes:duration')[0] ||
-      episode.getElementsByTagName('duration')[0];
+      rawEpisode.getElementsByTagName('itunes:duration')[0] ||
+      rawEpisode.getElementsByTagName('duration')[0];
 
     try {
-      const result = {
-        duration: durationNode && getDurationInSeconds(durationNode.textContent),
+      const episode = {
+        duration: durationNode && getDurationInSeconds(durationNode.textContent as string),
         progress: 0,
-        guid: episode.getElementsByTagName('guid')[0].textContent,
-        date: new Date(episode.getElementsByTagName('pubDate')[0].textContent).toISOString(),
+        guid: rawEpisode.getElementsByTagName('guid')[0].textContent,
+        date: new Date(rawEpisode.getElementsByTagName('pubDate')[0]
+          .textContent as string).toISOString(),
         author: authorNode && authorNode.textContent,
         title: titleNode && titleNode.textContent,
         subTitle: subTitleNode && subTitleNode.textContent,
         description: descriptionNode && descriptionNode.textContent,
-        fileSize: parseInt(episode.getElementsByTagName('enclosure')[0].getAttribute('length'), 10),
-        type: episode.getElementsByTagName('enclosure')[0].getAttribute('type'),
-        fileUrl: episode.getElementsByTagName('enclosure')[0].getAttribute('url'),
-      };
-      return result;
+        fileSize: parseInt(
+          rawEpisode.getElementsByTagName('enclosure')[0].getAttribute('length') as string,
+          10
+        ),
+        type: rawEpisode.getElementsByTagName('enclosure')[0].getAttribute('type'),
+        fileUrl: rawEpisode.getElementsByTagName('enclosure')[0].getAttribute('url'),
+      } as Episode;
+
+      episodes.push(episode);
     } catch (err) {
-      console.log('Error parsing episode', err, episode);
-      return null;
+      console.log('Error parsing episode', err, rawEpisode);
     }
   });
+
   return episodes;
 };
 
 class ApiService {
-  async search(query) {
+  async search(query: string) {
     const url = `https://itunes.apple.com/search?media=podcast&term=${query}`;
     const results = await axios
       .get(`https://proxy.garredow.co/cors/${encodeURIComponent(url)}`)
@@ -73,7 +84,7 @@ class ApiService {
     return results;
   }
 
-  async getEpisodes(feedUrl) {
+  async getEpisodes(feedUrl: string): Promise<Episode[]> {
     const result = await axios
       .get(`https://proxy.garredow.co/cors/${encodeURIComponent(feedUrl)}`)
       .then(res => res.data)
@@ -91,7 +102,7 @@ class ApiService {
     }
   }
 
-  async getPodcastById(podcastId) {
+  async getPodcastById(podcastId: number): Promise<Podcast> {
     const url = `https://itunes.apple.com/lookup?id=${podcastId}`;
     const result = await axios
       .get(`https://proxy.garredow.co/cors/${encodeURIComponent(url)}`)

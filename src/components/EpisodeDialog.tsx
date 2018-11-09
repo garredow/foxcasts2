@@ -5,13 +5,21 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
 import CloseIcon from '@material-ui/icons/Close';
-import EpisodeDetail from '../components/EpisodeDetail';
+import EpisodeDetail from './EpisodeDetail';
+import { EpisodeExtended } from '../models';
 
-function Transition(props) {
+interface Props {
+  open: boolean;
+  episode: EpisodeExtended;
+  onClose: (event: any) => void;
+  onStream: (event: any) => void;
+}
+
+function Transition(props: Props) {
   return <Slide direction="up" {...props} />;
 }
 
-class EpisodeDialog extends React.Component {
+class EpisodeDialog extends React.Component<Props, any> {
   render() {
     return (
       <Dialog

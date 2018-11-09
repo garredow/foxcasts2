@@ -1,9 +1,9 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import Button, { ButtonProps } from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const styles = theme => ({
+const styles: any = (theme: any) => ({
   root: {
     margin: theme.spacing.unit,
     position: 'relative',
@@ -17,7 +17,16 @@ const styles = theme => ({
   },
 });
 
-const ProgressButton = props => (
+interface Props {
+  classes: any;
+  variant: 'text' | 'flat' | 'outlined' | 'contained' | 'raised' | 'fab' | 'extendedFab';
+  disabled: boolean;
+  loading: boolean;
+  onClick: (ev: React.MouseEvent) => void;
+  children?: React.ReactNode;
+}
+
+const ProgressButton = (props: Props) => (
   <div className={props.classes.root}>
     <Button variant={props.variant || 'outlined'} disabled={props.disabled} onClick={props.onClick}>
       {props.children}

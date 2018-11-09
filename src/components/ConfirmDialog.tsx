@@ -6,7 +6,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-class ConfirmDialog extends React.Component {
+interface Props {
+  onClose: ((event: any) => void);
+  open: boolean;
+  title: string;
+  body: string;
+}
+
+class ConfirmDialog extends React.Component<Props, any> {
   handleCancel = () => {
     this.props.onClose('cancel');
   };
