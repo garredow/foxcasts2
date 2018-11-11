@@ -3,7 +3,7 @@ export interface Episode {
   duration: number;
   progress: number;
   guid: string;
-  date: string;
+  date: Date;
   author: string;
   title: string;
   subTitle: string;

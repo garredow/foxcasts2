@@ -1,11 +1,11 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import PodcastService from '../services/podcastService';
 import AppContext from '../components/AppContext';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import { Episode } from '../models';
+import { EpisodeExtended } from '../models';
+import DatabaseService from '../services/databaseService';
+import EpisodeList from '../components/EpisodeList';
+
+const dbService = new DatabaseService();
 
 const styles = {};
 
@@ -23,19 +23,6 @@ function getAppTitle(playlist: string) {
   return title;
 }
 
-interface EpisodeRowProps {
-  episode: Episode;
-  onClick: (ev: any) => void;
-  setAppTitle: (title: string) => void;
-}
-
-const EpisodeRow = ({ episode, onClick }: EpisodeRowProps) => (
-  <ListItem button onClick={onClick}>
-    {/* <Avatar src={episode.} */}
-    <ListItemText primary={episode.title} secondary={episode.author} />
-  </ListItem>
-);
-
 interface Props {
   setAppTitle: (title: string) => void;
   setActiveEpisode: (ev: any) => void;
@@ -43,21 +30,32 @@ interface Props {
 }
 
 interface State {
-  episodes: Episode[];
+  episodes: EpisodeExtended[];
 }
 
 class PlaylistPage extends React.Component<Props, State> {
-  state = { episodes: [] };
+  state: State = { episodes: [] };
 
   async componentDidMount() {
     const playlist = this.props.match.params.playlist;
     this.props.setAppTitle(getAppTitle(playlist));
 
-    // Get episodes
+    const episodes = await dbService.getPlaylist(playlist);
+    this.setState({ episodes });
   }
 
+  handleStream = (episode: EpisodeExtended) => {
+    this.props.setActiveEpisode(episode);
+  };
+
   render() {
-    return <div>Playlist {this.props.match.params.playlist}</div>;
+    const { episodes = [] } = this.state;
+
+    return (
+      <React.Fragment>
+        <EpisodeList episodes={episodes} listType="playlist" onStream={this.handleStream} />
+      </React.Fragment>
+    );
   }
 }
 

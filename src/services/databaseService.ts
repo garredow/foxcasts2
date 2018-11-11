@@ -1,5 +1,5 @@
 import Dexie from 'dexie';
-import { Podcast, Episode } from '../models';
+import { Podcast, Episode, EpisodeExtended } from '../models';
 
 class DatabaseService {
   db: Dexie;
@@ -8,7 +8,7 @@ class DatabaseService {
     this.db = new Dexie('foxcasts');
     this.db.version(1).stores({
       podcasts: '++id, authorId, podcastId',
-      episodes: '++id, authorId, podcastId',
+      episodes: '++id, authorId, podcastId, date',
     });
   }
 
@@ -76,8 +76,27 @@ class DatabaseService {
     return podcasts;
   }
 
-  async getPlaylist(playlist: string) {
-    return [];
+  async getPlaylist(playlist: string): Promise<EpisodeExtended[]> {
+    const podcastCovers = await this.getPodcasts().then(podcasts => {
+      return podcasts.reduce((coverMap: any, podcast) => {
+        coverMap[podcast.id] = podcast.cover;
+        return coverMap;
+      }, {});
+    });
+
+    const episodes: Episode[] = await this.db
+      .table('episodes')
+      .orderBy('date')
+      .reverse()
+      .limit(20)
+      .toArray();
+
+    const result = episodes.map(episode => ({
+      ...episode,
+      cover: podcastCovers[episode.podcastId],
+    }));
+
+    return result;
   }
 
   async updateEpisode(episodeId: number, changes: any): Promise<Episode> {

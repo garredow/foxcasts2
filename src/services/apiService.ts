@@ -47,8 +47,7 @@ const parseXmlEpisodes = (xmlString: string): Episode[] => {
         duration: durationNode && getDurationInSeconds(durationNode.textContent as string),
         progress: 0,
         guid: rawEpisode.getElementsByTagName('guid')[0].textContent,
-        date: new Date(rawEpisode.getElementsByTagName('pubDate')[0]
-          .textContent as string).toISOString(),
+        date: new Date(rawEpisode.getElementsByTagName('pubDate')[0].textContent as string),
         author: authorNode && authorNode.textContent,
         title: titleNode && titleNode.textContent,
         subTitle: subTitleNode && subTitleNode.textContent,

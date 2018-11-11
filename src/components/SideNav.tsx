@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import { Link } from 'react-router-dom';
 import AppsIcon from '@material-ui/icons/Apps';
+import TimeIcon from '@material-ui/icons/AccessTime';
 
 interface ListItem {
   path: string;
@@ -24,7 +25,7 @@ interface PlaylistListItem extends ListItem {
 }
 
 const playlists: PlaylistListItem[] = [
-  // { path: '/playlist/recent', id: 'recent', title: 'Most Recent', icon: <AppsIcon /> },
+  { path: '/playlist/recent', id: 'recent', title: 'Most Recent', icon: <TimeIcon /> },
   // { path: '/playlist/downloaded', id: 'downloaded', title: 'Downloaded', icon: <AppsIcon /> },
   // { path: '/playlist/inProgress', id: 'inProgress', title: 'In Progress', icon: <AppsIcon /> },
 ];
