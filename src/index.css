@@ -41,6 +41,9 @@ a {
     -webkit-backdrop-filter: blur(50px);
     background: none !important;
   }
+  .app-bar {
+    -webkit-backdrop-filter: blur(5px);
+  }
 }
 
 /* Some frequently used styles */
