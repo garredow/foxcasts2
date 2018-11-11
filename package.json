@@ -17,6 +17,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.1",
     "redux": "^4.0.0",
+    "sanitize-html": "^1.19.1",
     "typeface-roboto": "0.0.54",
     "typescript": "^3.1.6",
     "xml2js": "^0.4.19"
@@ -33,6 +34,7 @@
     "@types/react-dom": "^16.0.9",
     "@types/react-loadable": "^5.4.1",
     "@types/react-router-dom": "^4.3.1",
+    "@types/sanitize-html": "^1.18.2",
     "webpack-bundle-analyzer": "^2.13.1"
   },
   "browserslist": [

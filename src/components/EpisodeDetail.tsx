@@ -1,16 +1,23 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 import formatTime from '../utils/formatTime';
 import { Episode } from '../models';
+import sanitizeHtml from 'sanitize-html';
 
-const styles: any = {
+const styles: any = (theme: Theme) => ({
   container: {
     textAlign: 'center',
     marginBottom: '15px',
   },
-};
+  details: {
+    color: theme.palette.text.primary,
+    '& a': {
+      color: theme.palette.secondary.main,
+    },
+  },
+});
 
 interface Props {
   classes: any;
@@ -35,10 +42,13 @@ class EpisodeDetail extends React.Component<Props, any> {
             {episode.progress > 0 ? `Resume at ${formatTime(episode.progress)}` : 'Play'}
           </Button>
         </div>
-        <Typography variant="body1">{episode.subTitle}</Typography>
+        <div
+          className={classes.details}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(episode.description) }}
+        />
       </React.Fragment>
     );
   }
 }
 
-export default withStyles(styles)(EpisodeDetail);
+export default withStyles(styles, { withTheme: true })(EpisodeDetail);
