@@ -10,10 +10,28 @@ import PodcastService from '../services/podcastService';
 import { EpisodeExtended } from '../models';
 import MiniPlayer from '../components/MiniPlayer';
 import FullPlayer from '../components/FullPlayer';
+import { withStyles, WithStyles } from '@material-ui/core';
 
 const podcastService = new PodcastService();
 
-interface Props {
+const styles: any = {
+  backdrop: {
+    background: 'red',
+    position: 'fixed',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    filter: 'blur(50px)',
+    opacity: 0.2,
+    zIndex: -1,
+  },
+};
+
+interface Props extends WithStyles {
   episode?: EpisodeExtended;
   onStopPlayback: () => void;
 }
@@ -117,7 +135,7 @@ class Player extends React.Component<Props, State> {
   };
 
   render() {
-    const episode = this.props.episode;
+    const { classes, episode } = this.props;
     if (!episode) return null;
 
     return (
@@ -135,6 +153,10 @@ class Player extends React.Component<Props, State> {
           TransitionComponent={Transition}
           classes={{ paper: 'dialog-background' }}
         >
+          <div
+            style={{ backgroundImage: `url('${episode.cover[600]}')` }}
+            className={classes.backdrop}
+          />
           <AppBar position="sticky" className="app-bar">
             <Toolbar>
               <IconButton onClick={this.onCloseFullPlayer}>
@@ -168,4 +190,4 @@ class Player extends React.Component<Props, State> {
   }
 }
 
-export default Player;
+export default withStyles(styles)(Player);
