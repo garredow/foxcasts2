@@ -28,8 +28,12 @@ class ConfirmDialog extends React.Component<Props, any> {
           <Typography variant="body1">{this.props.body}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleCancel}>Cancel</Button>
-          <Button onClick={this.handleOk}>Yes</Button>
+          <Button className="btn-cancel" onClick={this.handleCancel}>
+            Cancel
+          </Button>
+          <Button className="btn-ok" onClick={this.handleOk}>
+            Yes
+          </Button>
         </DialogActions>
       </Dialog>
     );

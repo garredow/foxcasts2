@@ -14,9 +14,6 @@ import PodcastPreview from '../components/PodcastPreview';
 import AppContext from '../components/AppContext';
 import { AppContextProps, ITunesPodcast } from '../models';
 
-const apiService = new ApiService();
-const podcastService = new PodcastService();
-
 const styles: any = {
   queryInput: {
     width: '100%',
@@ -43,6 +40,9 @@ class SearchPage extends React.Component<Props, State> {
     searching: false,
   };
 
+  private apiService = new ApiService();
+  private podcastService = new PodcastService();
+
   componentDidMount() {
     this.props.setAppTitle('Search');
   }
@@ -59,7 +59,7 @@ class SearchPage extends React.Component<Props, State> {
     }
 
     this.setState({ searching: true });
-    apiService
+    this.apiService
       .search(this.state.query)
       .then(results => this.setState({ searchResults: results }))
       .catch(err => console.error(err))
@@ -77,7 +77,7 @@ class SearchPage extends React.Component<Props, State> {
   };
 
   subscribe = (podcastId: number) => () => {
-    podcastService.subscribe(podcastId);
+    this.podcastService.subscribe(podcastId);
   };
 
   render() {
@@ -86,7 +86,7 @@ class SearchPage extends React.Component<Props, State> {
     const searchBarIcon = this.state.searching ? (
       <CircularProgress size={24} color="primary" />
     ) : (
-      <IconButton type="submit">
+      <IconButton type="submit" className="btn-search">
         <SearchIcon />
       </IconButton>
     );
