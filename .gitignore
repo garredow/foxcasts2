@@ -22,3 +22,6 @@ yarn-error.log*
 
 # config
 now.json
+
+# IDE
+.vscode/settings.json
