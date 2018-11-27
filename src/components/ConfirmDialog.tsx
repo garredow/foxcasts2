@@ -25,7 +25,7 @@ class ConfirmDialog extends React.Component<Props, any> {
       <Dialog maxWidth="xs" open={this.props.open} onClose={this.props.onClose}>
         <DialogTitle>{this.props.title || 'Confirm'}</DialogTitle>
         <DialogContent>
-          <Typography variant="body1">{this.props.body}</Typography>
+          <Typography>{this.props.body}</Typography>
         </DialogContent>
         <DialogActions>
           <Button className="btn-cancel" onClick={this.handleCancel}>

@@ -48,7 +48,7 @@ class MiniPlayer extends React.Component<Props, any> {
       <div className={classes.root} onClick={this.props.onClick}>
         <img src={episode.cover['60']} alt="cover" className={classes.cover} />
         <div className={classes.detailContainer}>
-          <Typography variant="subheading" noWrap>
+          <Typography variant="subtitle1" noWrap>
             {episode.title}
           </Typography>
           <div>

@@ -68,7 +68,7 @@ class App extends React.Component<Props, State> {
               <IconButton className="menu-icon">
                 <MenuIcon onClick={this.toggleNav(true)} />
               </IconButton>
-              <Typography variant="title">{this.state.appTitle}</Typography>
+              <Typography variant="h6">{this.state.appTitle}</Typography>
             </Toolbar>
           </AppBar>
           <div className={classes.routeContainer}>

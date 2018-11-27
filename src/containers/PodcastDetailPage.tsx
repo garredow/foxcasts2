@@ -105,8 +105,8 @@ class PodcastDetailPage extends React.Component<Props, State> {
         />
         <div className={classes.detailContainer}>
           <img className={classes.cover} src={podcast.cover['600']} alt={podcast.title} />
-          <Typography variant="headline">{podcast.title}</Typography>
-          <Typography variant="subheading">{podcast.author}</Typography>
+          <Typography variant="h5">{podcast.title}</Typography>
+          <Typography variant="subtitle1">{podcast.author}</Typography>
         </div>
         <div>
           <EpisodeList episodes={episodes} listType="podcast" onStream={this.handleStream} />

@@ -34,8 +34,8 @@ class EpisodeDetail extends React.Component<Props, any> {
     return (
       <React.Fragment>
         <div className={classes.container}>
-          <Typography variant="title">{episode.title}</Typography>
-          <Typography variant="subheading">{episode.author}</Typography>
+          <Typography variant="h6">{episode.title}</Typography>
+          <Typography variant="subtitle1">{episode.author}</Typography>
         </div>
         <div className={classes.container}>
           <Button variant="outlined" onClick={this.props.onStream}>

@@ -87,7 +87,7 @@ class FullPlayer extends React.Component<Props, any> {
       <div className={classes.root}>
         <div className={classes.detailContainer}>
           <img className={classes.cover} src={episode.cover['600']} alt={episode.title} />
-          <Typography variant="headline">{episode.title}</Typography>
+          <Typography variant="h5">{episode.title}</Typography>
         </div>
         <div className={classes.progressContainer}>
           <LinearProgress

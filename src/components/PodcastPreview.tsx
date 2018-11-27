@@ -106,8 +106,8 @@ class PodcastPreview extends React.Component<Props, State> {
         <div className={classes.container}>
           <img src={podcast.artworkUrl600} className={classes.cover} alt={podcast.collectionName} />
           <div className={classes.titleArtist}>
-            <Typography variant="title">{podcast.collectionName}</Typography>
-            <Typography variant="subheading">{podcast.artistName}</Typography>
+            <Typography variant="h6">{podcast.collectionName}</Typography>
+            <Typography variant="subtitle1">{podcast.artistName}</Typography>
           </div>
           <div className={classes.actions}>
             <ProgressButton
@@ -119,13 +119,13 @@ class PodcastPreview extends React.Component<Props, State> {
               {this.state.subscribed ? 'Subscribed' : 'Subscribe'}
             </ProgressButton>
           </div>
-          <Typography variant="body1" className={classes.description}>
+          <Typography className={classes.description}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi feugiat tortor ut tempor
             ultrices. Donec in accumsan quam. Donec a orci sed odio rhoncus sodales sit amet nec
             ligula.
           </Typography>
           <div className={classes.episodesContainer}>
-            <Typography variant="subheading">Recent Episodes</Typography>
+            <Typography variant="subtitle1">Recent Episodes</Typography>
             <List disablePadding={true}>
               {this.state.episodes.map(episode => (
                 <ListItem key={episode.guid} disableGutters={true}>
