@@ -111,9 +111,7 @@ class Player extends React.Component<Props, State> {
     progress = Math.ceil(progress);
     podcastService.updateEpisode(this.props.episode.id, { progress });
 
-    if (!this.state.isSmallPlayer) {
-      this.setState({ progress });
-    }
+    this.setState({ progress });
   };
 
   handleLoadedMetadata = (ev: SyntheticEvent<HTMLAudioElement>) => {
@@ -143,6 +141,8 @@ class Player extends React.Component<Props, State> {
         <MiniPlayer
           episode={episode}
           isPlaying={this.state.isPlaying}
+          progress={this.state.progress}
+          duration={this.state.duration}
           onClick={this.openFullView}
           onTogglePlaying={this.handleTogglePlaying}
         />
