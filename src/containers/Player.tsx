@@ -127,6 +127,20 @@ class Player extends React.Component<Props, State> {
     this.setState({ progress, duration });
   };
 
+  handleEpisodeEnded = () => {
+    if (!this.props.episode) return;
+
+    const progress = this.props.episode.duration;
+
+    this.setState({
+      progress,
+      isPlaying: false,
+    });
+
+    this.audioRef.audioEl.pause();
+    podcastService.updateEpisode(this.props.episode.id, { progress });
+  };
+
   handleSeek = (newTime: number) => {
     this.setState({ progress: newTime });
     this.audioRef.audioEl.currentTime = newTime;
@@ -180,6 +194,7 @@ class Player extends React.Component<Props, State> {
           listenInterval={1000}
           onListen={this.handleProgressChanged}
           onLoadedMetadata={this.handleLoadedMetadata}
+          onEnded={this.handleEpisodeEnded}
           src={episode.fileUrl}
           ref={(element: any) => {
             this.audioRef = element;
