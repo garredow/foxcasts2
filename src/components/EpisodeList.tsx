@@ -38,10 +38,12 @@ class EpisodeList extends React.Component<Props, State> {
         fields.avatar = episode.cover[60];
         fields.primary = episode.title;
         fields.secondary = episode.subTitle;
+        fields.isPlayed = episode.progress >= episode.duration;
         break;
       default:
         fields.primary = episode.title;
         fields.secondary = episode.subTitle;
+        fields.isPlayed = episode.progress >= episode.duration;
         break;
     }
 
