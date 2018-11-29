@@ -13,6 +13,7 @@ interface Props {
   episode: EpisodeExtended;
   onClose: (event: any) => void;
   onStream: (event: any) => void;
+  onTogglePlayed: (event: any) => void;
 }
 
 function Transition(props: Props) {
@@ -37,7 +38,11 @@ class EpisodeDialog extends React.Component<Props, any> {
           </Toolbar>
         </AppBar>
         <div className="padding-15">
-          <EpisodeDetail episode={this.props.episode} onStream={this.props.onStream} />
+          <EpisodeDetail
+            episode={this.props.episode}
+            onStream={this.props.onStream}
+            onTogglePlayed={this.props.onTogglePlayed}
+          />
         </div>
       </Dialog>
     );

@@ -11,6 +11,13 @@ const styles: any = (theme: Theme) => ({
     textAlign: 'center',
     marginBottom: '15px',
   },
+  actions: {
+    marginBottom: '15px',
+    '& button': {
+      display: 'block',
+      margin: '0 auto 10px auto',
+    },
+  },
   details: {
     color: theme.palette.text.primary,
     '& a': {
@@ -23,6 +30,7 @@ interface Props {
   classes: any;
   episode: Episode;
   onStream: (event: any) => void;
+  onTogglePlayed: (event: any) => void;
 }
 
 class EpisodeDetail extends React.Component<Props, any> {
@@ -37,9 +45,12 @@ class EpisodeDetail extends React.Component<Props, any> {
           <Typography variant="h6">{episode.title}</Typography>
           <Typography variant="subtitle1">{episode.author}</Typography>
         </div>
-        <div className={classes.container}>
+        <div className={classes.actions}>
           <Button variant="outlined" onClick={this.props.onStream}>
             {episode.progress > 0 ? `Resume at ${formatTime(episode.progress)}` : 'Play'}
+          </Button>
+          <Button variant="outlined" onClick={this.props.onTogglePlayed}>
+            Mark as {episode.progress >= episode.duration ? 'Unplayed' : 'Played'}
           </Button>
         </div>
         <div

@@ -8,6 +8,7 @@ interface Props {
   episodes: EpisodeExtended[];
   listType: 'playlist' | 'podcast';
   onStream: (episode: EpisodeExtended) => void;
+  onTogglePlayed: (episodeId: number) => void;
 }
 
 interface State {
@@ -28,6 +29,12 @@ class EpisodeList extends React.Component<Props, State> {
   handleStream = () => {
     this.clearSelectedEpisode();
     this.props.onStream(this.state.selectedEpisode!);
+  };
+
+  handleTogglePlayed = (ev: any) => {
+    if (!this.state.selectedEpisode) return;
+
+    this.props.onTogglePlayed(this.state.selectedEpisode.id);
   };
 
   getListItemFields = (episode: EpisodeExtended) => {
@@ -55,6 +62,10 @@ class EpisodeList extends React.Component<Props, State> {
 
     if (!episodes || episodes.length === 0) return null;
 
+    const selectedEpisode = this.state.selectedEpisode
+      ? this.props.episodes.find(e => e.id === (this.state.selectedEpisode as EpisodeExtended).id)
+      : null;
+
     return (
       <React.Fragment>
         <List>
@@ -67,10 +78,11 @@ class EpisodeList extends React.Component<Props, State> {
           ))}
         </List>
         <EpisodeDialog
-          episode={this.state.selectedEpisode as EpisodeExtended}
+          episode={selectedEpisode as EpisodeExtended}
           open={!!this.state.selectedEpisode}
           onClose={this.clearSelectedEpisode}
           onStream={this.handleStream}
+          onTogglePlayed={this.handleTogglePlayed}
         />
       </React.Fragment>
     );

@@ -48,12 +48,37 @@ class PlaylistPage extends React.Component<Props, State> {
     this.props.setActiveEpisode(episode);
   };
 
+  handleTogglePlayed = (episodeId: number) => {
+    const episode = this.state.episodes.find(e => e.id === episodeId);
+
+    if (!episode) return;
+
+    const isPlayed = episode.progress >= episode.duration;
+    const progress = isPlayed ? 0 : episode.duration;
+
+    dbService.updateEpisode(episodeId, { progress });
+
+    const updatedEpisodes = this.state.episodes.map(e => {
+      if (e.id === episodeId) {
+        e.progress = progress;
+      }
+      return e;
+    });
+
+    this.setState({ episodes: updatedEpisodes });
+  };
+
   render() {
     const { episodes = [] } = this.state;
 
     return (
       <React.Fragment>
-        <EpisodeList episodes={episodes} listType="playlist" onStream={this.handleStream} />
+        <EpisodeList
+          episodes={episodes}
+          listType="playlist"
+          onStream={this.handleStream}
+          onTogglePlayed={this.handleTogglePlayed}
+        />
       </React.Fragment>
     );
   }

@@ -7,8 +7,10 @@ import ConfirmDialog from '../components/ConfirmDialog';
 import { Podcast, EpisodeExtended, AppContextProps } from '../models';
 import AppContext from '../components/AppContext';
 import EpisodeList from '../components/EpisodeList';
+import DatabaseService from '../services/databaseService';
 
 const podcastService = new PodcastService();
+const dbService = new DatabaseService();
 
 const styles: any = {
   root: {
@@ -84,6 +86,30 @@ class PodcastDetailPage extends React.Component<Props, State> {
     this.props.setActiveEpisode(episode);
   };
 
+  handleTogglePlayed = (episodeId: number) => {
+    if (!this.state.podcast || !this.state.podcast.episodes) return;
+
+    const episode = this.state.podcast.episodes.find(e => e.id === episodeId);
+
+    if (!episode) return;
+
+    const isPlayed = episode.progress >= episode.duration;
+    const progress = isPlayed ? 0 : episode.duration;
+
+    dbService.updateEpisode(episodeId, { progress });
+
+    const updatedEpisodes = this.state.podcast.episodes.map(e => {
+      if (e.id === episodeId) {
+        e.progress = progress;
+      }
+      return e;
+    });
+
+    const updatedPodcast = Object.assign({}, this.state.podcast, { episodes: updatedEpisodes });
+
+    this.setState({ podcast: updatedPodcast });
+  };
+
   render() {
     const { classes } = this.props;
     const podcast = this.state.podcast;
@@ -109,7 +135,12 @@ class PodcastDetailPage extends React.Component<Props, State> {
           <Typography variant="subtitle1">{podcast.author}</Typography>
         </div>
         <div>
-          <EpisodeList episodes={episodes} listType="podcast" onStream={this.handleStream} />
+          <EpisodeList
+            episodes={episodes}
+            listType="podcast"
+            onStream={this.handleStream}
+            onTogglePlayed={this.handleTogglePlayed}
+          />
         </div>
         <div className={classes.actionsContainer}>
           <Button variant="outlined" color="secondary" onClick={this.promptConfirm}>
