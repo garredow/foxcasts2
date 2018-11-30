@@ -64,14 +64,18 @@ class Player extends React.Component<Props, State> {
     const isNewEpisode = !previousEpisode || previousEpisode.id !== episode.id;
 
     if (isNewEpisode) {
-      const progress = episode.progress;
-      this.audioRef.audioEl.currentTime = progress;
-      this.setState({
-        isSmallPlayer: true,
-        isPlaying: false,
-        progress,
-        duration: episode.duration,
-      });
+      this.audioRef.audioEl.currentTime = episode.progress;
+      this.setState(
+        {
+          isSmallPlayer: true,
+          isPlaying: false,
+          progress: episode.progress,
+          duration: episode.duration,
+        },
+        () => {
+          this.handleTogglePlaying();
+        }
+      );
     }
   }
 
@@ -84,8 +88,10 @@ class Player extends React.Component<Props, State> {
     });
   };
 
-  handleTogglePlaying = (ev: MouseEvent) => {
-    ev.stopPropagation();
+  handleTogglePlaying = (ev?: MouseEvent) => {
+    if (ev) {
+      ev.stopPropagation();
+    }
 
     const isPlaying = !this.state.isPlaying;
     this.setState({ isPlaying });
