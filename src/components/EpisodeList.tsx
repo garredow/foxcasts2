@@ -26,9 +26,17 @@ class EpisodeList extends React.Component<Props, State> {
     this.setState({ selectedEpisode: undefined });
   };
 
-  handleStream = () => {
+  handleResume = () => {
     this.clearSelectedEpisode();
     this.props.onStream(this.state.selectedEpisode!);
+  };
+
+  handlePlayFromBeginning = () => {
+    this.clearSelectedEpisode();
+    const episode = { ...this.state.selectedEpisode } as EpisodeExtended;
+    episode.progress = 0;
+
+    this.props.onStream(episode);
   };
 
   handleTogglePlayed = (ev: any) => {
@@ -81,7 +89,8 @@ class EpisodeList extends React.Component<Props, State> {
           episode={selectedEpisode as EpisodeExtended}
           open={!!this.state.selectedEpisode}
           onClose={this.clearSelectedEpisode}
-          onStream={this.handleStream}
+          onResume={this.handleResume}
+          onPlayFromBeginning={this.handlePlayFromBeginning}
           onTogglePlayed={this.handleTogglePlayed}
         />
       </React.Fragment>

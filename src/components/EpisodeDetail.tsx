@@ -29,15 +29,28 @@ const styles: any = (theme: Theme) => ({
 interface Props {
   classes: any;
   episode: Episode;
-  onStream: (event: any) => void;
+  onResume: (event: any) => void;
+  onPlayFromBeginning: (event: any) => void;
   onTogglePlayed: (event: any) => void;
 }
 
 class EpisodeDetail extends React.Component<Props, any> {
+  resumeStream() {}
   render() {
     const { classes, episode } = this.props;
 
     if (!episode) return null;
+
+    const playButton =
+      episode.progress >= episode.duration ? (
+        <Button variant="outlined" onClick={this.props.onPlayFromBeginning}>
+          Play From Beginning
+        </Button>
+      ) : (
+        <Button variant="outlined" onClick={this.props.onResume}>
+          {episode.progress > 0 ? `Resume at ${formatTime(episode.progress)}` : 'Play'}
+        </Button>
+      );
 
     return (
       <React.Fragment>
@@ -46,9 +59,7 @@ class EpisodeDetail extends React.Component<Props, any> {
           <Typography variant="subtitle1">{episode.author}</Typography>
         </div>
         <div className={classes.actions}>
-          <Button variant="outlined" onClick={this.props.onStream}>
-            {episode.progress > 0 ? `Resume at ${formatTime(episode.progress)}` : 'Play'}
-          </Button>
+          {playButton}
           <Button variant="outlined" onClick={this.props.onTogglePlayed}>
             Mark as {episode.progress >= episode.duration ? 'Unplayed' : 'Played'}
           </Button>

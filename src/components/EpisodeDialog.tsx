@@ -12,7 +12,8 @@ interface Props {
   open: boolean;
   episode: EpisodeExtended;
   onClose: (event: any) => void;
-  onStream: (event: any) => void;
+  onResume: (event: any) => void;
+  onPlayFromBeginning: (event: any) => void;
   onTogglePlayed: (event: any) => void;
 }
 
@@ -40,7 +41,8 @@ class EpisodeDialog extends React.Component<Props, any> {
         <div className="padding-15">
           <EpisodeDetail
             episode={this.props.episode}
-            onStream={this.props.onStream}
+            onResume={this.props.onResume}
+            onPlayFromBeginning={this.props.onPlayFromBeginning}
             onTogglePlayed={this.props.onTogglePlayed}
           />
         </div>
