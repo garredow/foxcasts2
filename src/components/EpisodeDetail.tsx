@@ -9,10 +9,10 @@ import sanitizeHtml from 'sanitize-html';
 const styles: any = (theme: Theme) => ({
   container: {
     textAlign: 'center',
-    marginBottom: '15px',
+    marginBottom: '20px',
   },
   actions: {
-    marginBottom: '15px',
+    marginBottom: '20px',
     '& button': {
       display: 'block',
       margin: '0 auto 10px auto',
@@ -35,22 +35,10 @@ interface Props {
 }
 
 class EpisodeDetail extends React.Component<Props, any> {
-  resumeStream() {}
   render() {
     const { classes, episode } = this.props;
 
     if (!episode) return null;
-
-    const playButton =
-      episode.progress >= episode.duration ? (
-        <Button variant="outlined" onClick={this.props.onPlayFromBeginning}>
-          Play From Beginning
-        </Button>
-      ) : (
-        <Button variant="outlined" onClick={this.props.onResume}>
-          {episode.progress > 0 ? `Resume at ${formatTime(episode.progress)}` : 'Play'}
-        </Button>
-      );
 
     return (
       <React.Fragment>
@@ -59,7 +47,14 @@ class EpisodeDetail extends React.Component<Props, any> {
           <Typography variant="subtitle1">{episode.author}</Typography>
         </div>
         <div className={classes.actions}>
-          {playButton}
+          <Button variant="outlined" onClick={this.props.onPlayFromBeginning}>
+            {episode.progress > 0 ? 'Play From Beginning' : 'Play'}
+          </Button>
+          {episode.progress > 0 && episode.progress < episode.duration && (
+            <Button variant="outlined" onClick={this.props.onResume}>
+              {`Resume at ${formatTime(episode.progress)}`}
+            </Button>
+          )}
           <Button variant="outlined" onClick={this.props.onTogglePlayed}>
             Mark as {episode.progress >= episode.duration ? 'Unplayed' : 'Played'}
           </Button>
