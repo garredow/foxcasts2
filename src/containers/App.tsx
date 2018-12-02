@@ -19,18 +19,18 @@ const styles: any = {
   },
 };
 
-interface Props {
+type AppProps = {
   classes: any;
-}
+};
 
-interface State {
+type AppState = {
   navOpen: boolean;
   appTitle: string;
   activeEpisode?: EpisodeExtended;
-}
+};
 
-class App extends React.Component<Props, State> {
-  state: State = {
+class App extends React.Component<AppProps, AppState> {
+  state: AppState = {
     navOpen: false,
     appTitle: 'FoxCasts',
     activeEpisode: undefined,

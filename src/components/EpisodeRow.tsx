@@ -10,15 +10,24 @@ const styles: StyleRules = {
   },
 };
 
-interface Props extends WithStyles {
+type OwnProps = {
   primary: string;
   secondary: string;
   avatar?: string;
   isPlayed: boolean;
   onClick: (ev: any) => void;
-}
+};
 
-const EpisodeRow = ({ avatar, primary, secondary, isPlayed, onClick, classes }: Props) => (
+type EpisodeRowProps = OwnProps & WithStyles;
+
+const EpisodeRow = ({
+  avatar,
+  primary,
+  secondary,
+  isPlayed,
+  onClick,
+  classes,
+}: EpisodeRowProps) => (
   <ListItem button onClick={onClick} className={isPlayed ? classes.played : ''}>
     {avatar && <Avatar src={avatar} />}
     <ListItemText primary={primary} secondary={secondary} />

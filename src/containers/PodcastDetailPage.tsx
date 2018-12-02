@@ -2,7 +2,7 @@ import React from 'react';
 import PodcastService from '../services/podcastService';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import ConfirmDialog from '../components/ConfirmDialog';
 import { Podcast, EpisodeExtended, AppContextProps } from '../models';
 import AppContext from '../components/AppContext';
@@ -44,18 +44,19 @@ const styles: any = {
   },
 };
 
-interface Props extends AppContextProps {
+type OwnProps = {
   match: any;
-  classes: any;
-}
+};
 
-interface State {
+type PodcastDetailPageProps = OwnProps & WithStyles & AppContextProps;
+
+type PodcastDetailPageState = {
   podcast?: Podcast;
   confirmDialogOpen: boolean;
-}
+};
 
-class PodcastDetailPage extends React.Component<Props, State> {
-  state: State = {
+class PodcastDetailPage extends React.Component<PodcastDetailPageProps, PodcastDetailPageState> {
+  state: PodcastDetailPageState = {
     confirmDialogOpen: false,
   };
 
@@ -158,7 +159,7 @@ class PodcastDetailPage extends React.Component<Props, State> {
   }
 }
 
-const ComponentWithContext = (props: Props) => (
+const ComponentWithContext = (props: PodcastDetailPageProps) => (
   <AppContext.Consumer>
     {({ setAppTitle, setActiveEpisode }: any) => (
       <PodcastDetailPage {...props} setAppTitle={setAppTitle} setActiveEpisode={setActiveEpisode} />

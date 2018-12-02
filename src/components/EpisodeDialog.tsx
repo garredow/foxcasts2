@@ -8,20 +8,20 @@ import CloseIcon from '@material-ui/icons/Close';
 import EpisodeDetail from './EpisodeDetail';
 import { EpisodeExtended } from '../models';
 
-interface Props {
+type EpisodeDialogProps = {
   open: boolean;
   episode: EpisodeExtended;
   onClose: (event: any) => void;
   onResume: (event: any) => void;
   onPlayFromBeginning: (event: any) => void;
   onTogglePlayed: (event: any) => void;
-}
+};
 
-function Transition(props: Props) {
+function Transition(props: EpisodeDialogProps) {
   return <Slide direction="up" {...props} />;
 }
 
-class EpisodeDialog extends React.Component<Props, any> {
+class EpisodeDialog extends React.Component<EpisodeDialogProps, any> {
   render() {
     return (
       <Dialog

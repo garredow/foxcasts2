@@ -1,6 +1,6 @@
 import { EpisodeExtended } from '.';
 
-export interface AppContextProps {
+export type AppContextProps = {
   setAppTitle: (title: string) => void;
   setActiveEpisode: (episode: EpisodeExtended) => void;
-}
+};

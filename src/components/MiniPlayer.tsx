@@ -4,7 +4,7 @@ import PauseIcon from '@material-ui/icons/Pause';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import { EpisodeExtended } from '../models';
 
 const styles: any = {
@@ -37,17 +37,18 @@ const styles: any = {
   },
 };
 
-interface Props {
-  classes: any;
+type OwnProps = {
   episode: EpisodeExtended;
   isPlaying: boolean;
   duration: number;
   progress: number;
   onClick: (ev: React.MouseEvent<HTMLDivElement>) => void;
   onTogglePlaying: (ev: any) => void;
-}
+};
 
-class MiniPlayer extends React.Component<Props, any> {
+type MiniPlayerProps = OwnProps & WithStyles;
+
+class MiniPlayer extends React.Component<MiniPlayerProps, any> {
   render() {
     const { classes, episode, progress, duration } = this.props;
     if (!episode) return null;

@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import PodcastService from '../services/podcastService';
 import ProgressButton from './ProgressButton';
 import { ITunesPodcast, Episode } from '../models';
@@ -64,20 +64,21 @@ const styles: any = (theme: any) => ({
   },
 });
 
-interface Props {
-  classes: any;
+type OwnProps = {
   podcast: ITunesPodcast;
   onSubscribe: () => void;
-}
+};
 
-interface State {
+type PodcastPreviewProps = OwnProps & WithStyles;
+
+type PodcastPreviewState = {
   subscribing: boolean;
   subscribed: boolean;
   episodes: Episode[];
-}
+};
 
-class PodcastPreview extends React.Component<Props, State> {
-  state: State = { subscribing: false, subscribed: false, episodes: [] };
+class PodcastPreview extends React.Component<PodcastPreviewProps, PodcastPreviewState> {
+  state: PodcastPreviewState = { subscribing: false, subscribed: false, episodes: [] };
 
   private podcastService = new PodcastService();
   private apiService = new ApiService();

@@ -2,7 +2,7 @@ import React from 'react';
 import PodcastService from '../services/podcastService';
 import { Link } from 'react-router-dom';
 import AppContext from '../components/AppContext';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import { Podcast, AppContextProps } from '../models';
 
 const podcastService = new PodcastService();
@@ -20,10 +20,10 @@ const styles: any = {
   },
 };
 
-interface PodcastTileProps {
+type PodcastTileProps = {
   classes: any;
   podcast: Podcast;
-}
+};
 
 const PodcastTile = ({ classes, podcast }: PodcastTileProps) => (
   <Link to={{ pathname: `/podcast/${podcast.id}` }} rel="div">
@@ -31,16 +31,14 @@ const PodcastTile = ({ classes, podcast }: PodcastTileProps) => (
   </Link>
 );
 
-interface Props extends AppContextProps {
-  classes: any;
-}
+type SubscriptionsPageProps = WithStyles & AppContextProps;
 
-interface State {
+interface SubscriptionsPageState {
   podcasts: Podcast[];
 }
 
-class SubscriptionsPage extends React.Component<Props, State> {
-  state: State = { podcasts: [] };
+class SubscriptionsPage extends React.Component<SubscriptionsPageProps, SubscriptionsPageState> {
+  state: SubscriptionsPageState = { podcasts: [] };
 
   componentDidMount() {
     this.props.setAppTitle('Subscriptions');

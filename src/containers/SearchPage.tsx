@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import Drawer from '@material-ui/core/Drawer';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import PodcastService from '../services/podcastService';
 import ApiService from '../services/apiService';
@@ -20,20 +20,18 @@ const styles: any = {
   },
 };
 
-interface Props extends AppContextProps {
-  classes: any;
-}
+type SearchPageProps = WithStyles & AppContextProps;
 
-interface State {
+type SearchPageState = {
   query: string;
   searchResults: any[];
   selectedPodcast?: ITunesPodcast;
   drawerOpen: boolean;
   searching: boolean;
-}
+};
 
-class SearchPage extends React.Component<Props, State> {
-  state: State = {
+class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
+  state: SearchPageState = {
     query: '',
     searchResults: [],
     drawerOpen: false,
@@ -67,7 +65,6 @@ class SearchPage extends React.Component<Props, State> {
   };
 
   viewDetail = (podcast: ITunesPodcast) => () => {
-    console.log(podcast);
     this.setState({ selectedPodcast: podcast });
     this.toggleDrawer(true)();
   };

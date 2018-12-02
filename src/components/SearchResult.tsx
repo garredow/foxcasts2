@@ -4,12 +4,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import { ITunesPodcast } from '../models';
 
-interface Props {
+type SearchResultProps = {
   podcast: ITunesPodcast;
   onClick: (ev: React.MouseEvent) => void;
-}
+};
 
-const SearchResult = ({ podcast, onClick }: Props) => (
+const SearchResult = ({ podcast, onClick }: SearchResultProps) => (
   <ListItem button onClick={onClick}>
     <Avatar src={podcast.artworkUrl100} />
     <ListItemText primary={podcast.collectionName} secondary={podcast.artistName} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -47,8 +47,7 @@ const styles: any = {
   },
 };
 
-interface Props {
-  classes: any;
+type OwnProps = {
   duration: number;
   progress: number;
   isPlaying: boolean;
@@ -56,9 +55,11 @@ interface Props {
   onSeek: (time: number) => void;
   onTogglePlaying: (ev: any) => void;
   onCloseEpisode: (ev: any) => void;
-}
+};
 
-class FullPlayer extends React.Component<Props, any> {
+type FullPlayerProps = OwnProps & WithStyles;
+
+class FullPlayer extends React.Component<FullPlayerProps, any> {
   handleBarClick = (ev: React.MouseEvent<HTMLDivElement>) => {
     const progressBarWidth = ev.currentTarget.clientWidth;
     const clickedAt = ev.clientX - ev.currentTarget.offsetLeft;

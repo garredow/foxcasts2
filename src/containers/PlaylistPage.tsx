@@ -23,18 +23,18 @@ function getAppTitle(playlist: string) {
   return title;
 }
 
-interface Props {
+type PlaylistPageProps = {
   setAppTitle: (title: string) => void;
   setActiveEpisode: (ev: any) => void;
   match: any;
-}
+};
 
-interface State {
+type PlaylistPageState = {
   episodes: EpisodeExtended[];
-}
+};
 
-class PlaylistPage extends React.Component<Props, State> {
-  state: State = { episodes: [] };
+class PlaylistPage extends React.Component<PlaylistPageProps, PlaylistPageState> {
+  state: PlaylistPageState = { episodes: [] };
 
   async componentDidMount() {
     const playlist = this.props.match.params.playlist;

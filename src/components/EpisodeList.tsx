@@ -4,19 +4,19 @@ import { EpisodeExtended } from '../models';
 import EpisodeDialog from './EpisodeDialog';
 import List from '@material-ui/core/List';
 
-interface Props {
+type EpisodeListProps = {
   episodes: EpisodeExtended[];
   listType: 'playlist' | 'podcast';
   onStream: (episode: EpisodeExtended) => void;
   onTogglePlayed: (episodeId: number) => void;
-}
+};
 
-interface State {
+type EpisodeListState = {
   selectedEpisode?: EpisodeExtended;
-}
+};
 
-class EpisodeList extends React.Component<Props, State> {
-  state: State = {};
+class EpisodeList extends React.Component<EpisodeListProps, EpisodeListState> {
+  state: EpisodeListState = {};
 
   setSelectedEpisode = (episode: EpisodeExtended) => () => {
     this.setState({ selectedEpisode: episode });

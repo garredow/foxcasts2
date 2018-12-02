@@ -31,23 +31,25 @@ const styles: any = {
   },
 };
 
-interface Props extends WithStyles {
+type OwnProps = {
   episode?: EpisodeExtended;
   onStopPlayback: () => void;
-}
+};
 
-interface State {
+type PlayerProps = OwnProps & WithStyles;
+
+type PlayerState = {
   isPlaying: boolean;
   isSmallPlayer: boolean;
   progress: number;
   duration: number;
-}
+};
 
-function Transition(props: Props) {
+function Transition(props: PlayerProps) {
   return <Slide direction="up" {...props} />;
 }
 
-class Player extends React.Component<Props, State> {
+class Player extends React.Component<PlayerProps, PlayerState> {
   state = {
     isPlaying: false,
     isSmallPlayer: true,

@@ -30,10 +30,10 @@ const playlists: PlaylistListItem[] = [
   // { path: '/playlist/inProgress', id: 'inProgress', title: 'In Progress', icon: <AppsIcon /> },
 ];
 
-interface NavListItemProps {
+type NavListItemProps = {
   item: ListItem;
   onClick: (ev: React.MouseEvent) => void;
-}
+};
 
 const NavListItem = ({ item, onClick }: NavListItemProps) => (
   <Link to={{ pathname: item.path }}>
@@ -44,12 +44,12 @@ const NavListItem = ({ item, onClick }: NavListItemProps) => (
   </Link>
 );
 
-interface Props {
+type SideNavProps = {
   open: boolean;
   onClose: (ev: any) => void;
-}
+};
 
-class SideNav extends React.Component<Props, any> {
+class SideNav extends React.Component<SideNavProps, any> {
   render() {
     return (
       <Drawer open={this.props.open} onClose={this.props.onClose}>

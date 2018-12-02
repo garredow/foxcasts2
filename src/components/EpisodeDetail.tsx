@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { withStyles, Theme } from '@material-ui/core/styles';
+import { withStyles, Theme, WithStyles } from '@material-ui/core/styles';
 import formatTime from '../utils/formatTime';
 import { Episode } from '../models';
 import sanitizeHtml from 'sanitize-html';
@@ -26,15 +26,16 @@ const styles: any = (theme: Theme) => ({
   },
 });
 
-interface Props {
-  classes: any;
+type OwnProps = {
   episode: Episode;
   onResume: (event: any) => void;
   onPlayFromBeginning: (event: any) => void;
   onTogglePlayed: (event: any) => void;
-}
+};
 
-class EpisodeDetail extends React.Component<Props, any> {
+type EpisodeDetailProps = OwnProps & WithStyles;
+
+class EpisodeDetail extends React.Component<EpisodeDetailProps, any> {
   render() {
     const { classes, episode } = this.props;
 
