@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -10,7 +10,7 @@ import { BrowserRouter } from 'react-router-dom';
 import AppContext from '../components/AppContext';
 import Player from './Player';
 import SideNav from '../components/SideNav';
-import { Episode, EpisodeExtended } from '../models';
+import { EpisodeExtended } from '../models';
 
 const styles: any = {
   routeContainer: {
@@ -81,4 +81,4 @@ class App extends React.Component<AppProps, AppState> {
   }
 }
 
-export default withStyles(styles)(App as any);
+export default withStyles(styles)(App);
