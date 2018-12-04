@@ -4,17 +4,17 @@ import PauseIcon from '@material-ui/icons/Pause';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles, Theme } from '@material-ui/core/styles';
 import { EpisodeExtended } from '../models';
 
-const styles: any = {
+const styles: any = (theme: Theme) => ({
   root: {
     position: 'fixed',
     bottom: 0,
     left: 0,
     right: 0,
-    background: 'rgba(55,55,55,1)',
-    borderTop: '1px solid #212121',
+    background: theme.palette.background.paper,
+    borderTop: `1px solid ${theme.palette.background.default}`,
   },
   progressBar: {
     height: '3px',
@@ -35,7 +35,7 @@ const styles: any = {
     display: 'flex',
     flexDirection: 'column',
   },
-};
+});
 
 type OwnProps = {
   episode: EpisodeExtended;
