@@ -22,12 +22,19 @@ const PodcastDetailPage = Loadable({
   delay: 300,
 });
 
+const SettingsPage = Loadable({
+  loader: () => import('./containers/SettingsPage'),
+  loading: Loading,
+  delay: 300,
+});
+
 const Router = () => (
   <Switch>
     <Route exact path="/" component={SubscriptionsPage} />
     <Route path="/search" component={SearchPage} />
     <Route path="/podcast/:id" component={PodcastDetailPage} />
     <Route path="/playlist/:playlist" component={PlaylistPage} />
+    <Route path="/settings" component={SettingsPage} />
     <Route component={SubscriptionsPage} />
   </Switch>
 );

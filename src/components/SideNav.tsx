@@ -8,6 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import { Link } from 'react-router-dom';
 import AppsIcon from '@material-ui/icons/Apps';
 import TimeIcon from '@material-ui/icons/AccessTime';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 interface ListItem {
   path: string;
@@ -64,6 +65,11 @@ class SideNav extends React.Component<SideNavProps, any> {
             <NavListItem item={item} onClick={this.props.onClose} key={item.title} />
           ))}
         </List>
+        <Divider />
+        <NavListItem
+          item={{ path: '/settings', title: 'Settings', icon: <SettingsIcon /> }}
+          onClick={this.props.onClose}
+        />
       </Drawer>
     );
   }
