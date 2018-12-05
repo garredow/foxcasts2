@@ -7,9 +7,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import { Link } from 'react-router-dom';
 import AppsIcon from '@material-ui/icons/Apps';
-import TimeIcon from '@material-ui/icons/AccessTime';
 import SettingsIcon from '@material-ui/icons/Settings';
 import SearchIcon from '@material-ui/icons/Search';
+import ListIcon from '@material-ui/icons/FilterList';
 import ListSubheader from '@material-ui/core/ListSubheader';
 
 interface ListItem {
@@ -28,8 +28,8 @@ interface PlaylistListItem extends ListItem {
 }
 
 const playlists: PlaylistListItem[] = [
-  { path: '/playlist/recent', id: 'recent', title: 'Most Recent', icon: <TimeIcon /> },
-  { path: '/playlist/inProgress', id: 'inProgress', title: 'In Progress', icon: <AppsIcon /> },
+  { path: '/playlist/recent', id: 'recent', title: 'Most Recent', icon: <ListIcon /> },
+  { path: '/playlist/inProgress', id: 'inProgress', title: 'In Progress', icon: <ListIcon /> },
 ];
 
 type NavListItemProps = {
