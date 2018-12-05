@@ -160,14 +160,16 @@ class Player extends React.Component<PlayerProps, PlayerState> {
 
     return (
       <React.Fragment>
-        <MiniPlayer
-          episode={episode}
-          isPlaying={this.state.isPlaying}
-          progress={this.state.progress}
-          duration={this.state.duration}
-          onClick={this.openFullView}
-          onTogglePlaying={this.handleTogglePlaying}
-        />
+        {this.state.isSmallPlayer && (
+          <MiniPlayer
+            episode={episode}
+            isPlaying={this.state.isPlaying}
+            progress={this.state.progress}
+            duration={this.state.duration}
+            onClick={this.openFullView}
+            onTogglePlaying={this.handleTogglePlaying}
+          />
+        )}
         <Dialog
           fullScreen
           open={!this.state.isSmallPlayer}
