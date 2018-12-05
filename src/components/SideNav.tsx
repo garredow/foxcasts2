@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import AppsIcon from '@material-ui/icons/Apps';
 import TimeIcon from '@material-ui/icons/AccessTime';
 import SettingsIcon from '@material-ui/icons/Settings';
+import SearchIcon from '@material-ui/icons/Search';
 import ListSubheader from '@material-ui/core/ListSubheader';
 
 interface ListItem {
@@ -19,7 +20,7 @@ interface ListItem {
 
 const listItems: ListItem[] = [
   { path: '/', title: 'Subscriptions', icon: <AppsIcon /> },
-  { path: '/search', title: 'Search', icon: <AppsIcon /> },
+  { path: '/search', title: 'Search', icon: <SearchIcon /> },
 ];
 
 interface PlaylistListItem extends ListItem {
