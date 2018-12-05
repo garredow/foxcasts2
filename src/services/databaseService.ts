@@ -8,7 +8,7 @@ class DatabaseService {
     this.db = new Dexie('foxcasts');
     this.db.version(1).stores({
       podcasts: '++id, authorId, podcastId',
-      episodes: '++id, authorId, podcastId, date',
+      episodes: '++id, authorId, podcastId, date, progress',
     });
   }
 
@@ -84,12 +84,29 @@ class DatabaseService {
       }, {});
     });
 
-    const episodes: Episode[] = await this.db
-      .table('episodes')
-      .orderBy('date')
-      .reverse()
-      .limit(20)
-      .toArray();
+    let episodes = [];
+
+    switch (playlist) {
+      case 'recent':
+        episodes = await this.db
+          .table('episodes')
+          .orderBy('date')
+          .reverse()
+          .limit(20)
+          .toArray();
+        break;
+      case 'inProgress':
+        episodes = await this.db
+          .table('episodes')
+          .where('progress')
+          .above(0)
+          .reverse()
+          .sortBy('date')
+          .then(results => results.filter(e => e.progress < e.duration));
+        break;
+      default:
+        break;
+    }
 
     const result = episodes.map(episode => ({
       ...episode,

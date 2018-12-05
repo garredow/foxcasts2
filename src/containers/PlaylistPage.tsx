@@ -16,6 +16,9 @@ function getAppTitle(playlist: string) {
     case 'recent':
       title = 'Most Recent';
       break;
+    case 'inProgress':
+      title = 'In Progress';
+      break;
     default:
       title = 'Playlist';
   }
@@ -40,9 +43,21 @@ class PlaylistPage extends React.Component<PlaylistPageProps, PlaylistPageState>
     const playlist = this.props.match.params.playlist;
     this.props.setAppTitle(getAppTitle(playlist));
 
+    this.getEpisodes(playlist);
+  }
+
+  componentDidUpdate(prevProps: PlaylistPageProps) {
+    const playlist = this.props.match.params.playlist;
+    if (prevProps.match.params.playlist !== playlist) {
+      this.props.setAppTitle(getAppTitle(playlist));
+      this.getEpisodes(playlist);
+    }
+  }
+
+  getEpisodes = async (playlist: string) => {
     const episodes = await dbService.getPlaylist(playlist);
     this.setState({ episodes });
-  }
+  };
 
   handleStream = (episode: EpisodeExtended) => {
     this.props.setActiveEpisode(episode);

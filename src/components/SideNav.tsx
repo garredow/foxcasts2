@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import AppsIcon from '@material-ui/icons/Apps';
 import TimeIcon from '@material-ui/icons/AccessTime';
 import SettingsIcon from '@material-ui/icons/Settings';
+import ListSubheader from '@material-ui/core/ListSubheader';
 
 interface ListItem {
   path: string;
@@ -27,8 +28,7 @@ interface PlaylistListItem extends ListItem {
 
 const playlists: PlaylistListItem[] = [
   { path: '/playlist/recent', id: 'recent', title: 'Most Recent', icon: <TimeIcon /> },
-  // { path: '/playlist/downloaded', id: 'downloaded', title: 'Downloaded', icon: <AppsIcon /> },
-  // { path: '/playlist/inProgress', id: 'inProgress', title: 'In Progress', icon: <AppsIcon /> },
+  { path: '/playlist/inProgress', id: 'inProgress', title: 'In Progress', icon: <AppsIcon /> },
 ];
 
 type NavListItemProps = {
@@ -59,8 +59,7 @@ class SideNav extends React.Component<SideNavProps, any> {
             <NavListItem item={item} onClick={this.props.onClose} key={item.title} />
           ))}
         </List>
-        <Divider />
-        <List component="nav">
+        <List component="nav" subheader={<ListSubheader component="div">Filters</ListSubheader>}>
           {playlists.map(item => (
             <NavListItem item={item} onClick={this.props.onClose} key={item.title} />
           ))}
