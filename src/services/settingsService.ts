@@ -1,13 +1,14 @@
 import { Settings } from '../models/Settings';
 
-const defaultSettings = {
+const defaultSettings: Settings = {
   theme: 'dark',
+  episodeRowLayout: 'default',
 };
 
 export class SettingsService {
   getSettings(): Settings {
     const settings = JSON.parse(localStorage.getItem('settings') as string) as Settings;
-    return settings || defaultSettings;
+    return Object.assign({}, defaultSettings, settings);
   }
 
   setSettings(settings: Settings) {

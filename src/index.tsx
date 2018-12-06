@@ -32,6 +32,7 @@ class AppWrapper extends React.Component<any, AppWrapperState> {
       }),
       settings: {
         theme: 'dark',
+        episodeRowLayout: 'compact',
         updateSettings: this.updateSettings,
       },
     };
@@ -56,6 +57,7 @@ class AppWrapper extends React.Component<any, AppWrapperState> {
   saveSettings = (fullSettings: SettingsWithMethods) => {
     const settings: Settings = {
       theme: fullSettings.theme,
+      episodeRowLayout: fullSettings.episodeRowLayout,
     };
 
     this.settingsService.setSettings(settings);

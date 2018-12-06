@@ -3,6 +3,8 @@ import EpisodeRow from './EpisodeRow';
 import { EpisodeExtended } from '../models';
 import EpisodeDialog from './EpisodeDialog';
 import List from '@material-ui/core/List';
+import SettingsContext from './SettingsContext';
+import { SettingsWithMethods } from '../models/Settings';
 
 type EpisodeListProps = {
   episodes: EpisodeExtended[];
@@ -16,6 +18,8 @@ type EpisodeListState = {
 };
 
 class EpisodeList extends React.Component<EpisodeListProps, EpisodeListState> {
+  static contextType = SettingsContext;
+  context!: SettingsWithMethods;
   state: EpisodeListState = {};
 
   setSelectedEpisode = (episode: EpisodeExtended) => () => {
@@ -81,6 +85,7 @@ class EpisodeList extends React.Component<EpisodeListProps, EpisodeListState> {
             <EpisodeRow
               {...this.getListItemFields(episode)}
               onClick={this.setSelectedEpisode(episode)}
+              layout={this.context.episodeRowLayout}
               key={episode.id}
             />
           ))}
