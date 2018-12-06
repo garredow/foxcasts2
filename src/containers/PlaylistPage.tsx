@@ -1,13 +1,19 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import AppContext from '../components/AppContext';
-import { EpisodeExtended } from '../models';
+import { EpisodeExtended, AppContextProps } from '../models';
 import DatabaseService from '../services/databaseService';
 import EpisodeList from '../components/EpisodeList';
+import { Typography } from '@material-ui/core';
 
 const dbService = new DatabaseService();
 
-const styles = {};
+const styles: any = {
+  noEpisodesMessage: {
+    padding: '30px 15px',
+    textAlign: 'center',
+  },
+};
 
 function getAppTitle(playlist: string) {
   let title;
@@ -26,11 +32,11 @@ function getAppTitle(playlist: string) {
   return title;
 }
 
-type PlaylistPageProps = {
-  setAppTitle: (title: string) => void;
-  setActiveEpisode: (ev: any) => void;
+type OwnProps = {
   match: any;
 };
+
+type PlaylistPageProps = OwnProps & WithStyles & AppContextProps;
 
 type PlaylistPageState = {
   episodes: EpisodeExtended[];
@@ -85,9 +91,13 @@ class PlaylistPage extends React.Component<PlaylistPageProps, PlaylistPageState>
 
   render() {
     const { episodes = [] } = this.state;
+    const { classes } = this.props;
 
     return (
       <React.Fragment>
+        {episodes.length === 0 && (
+          <Typography className={classes.noEpisodesMessage}>No episodes to display.</Typography>
+        )}
         <EpisodeList
           episodes={episodes}
           listType="playlist"
