@@ -21,7 +21,7 @@ const styles: any = (theme: Theme) => ({
   details: {
     color: theme.palette.text.primary,
     '& a': {
-      color: theme.palette.secondary.main,
+      color: (theme.palette.secondary as any)[200],
     },
   },
 });

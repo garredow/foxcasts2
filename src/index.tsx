@@ -8,6 +8,8 @@ import * as serviceWorker from './serviceWorker';
 import { Settings, SettingsWithMethods } from './models/Settings';
 import SettingsContext from './components/SettingsContext';
 import { SettingsService } from './services/settingsService';
+import pink from '@material-ui/core/colors/pink';
+import purple from '@material-ui/core/colors/purple';
 
 type AppWrapperState = {
   themeName: string;
@@ -24,15 +26,11 @@ class AppWrapper extends React.Component<any, AppWrapperState> {
 
     this.state = {
       themeName: 'dark',
-      theme: createMuiTheme({
-        typography: {
-          useNextVariants: true,
-        },
-        palette: { type: 'dark' },
-      }),
+      theme: this.createTheme('dark'),
       settings: {
         theme: 'dark',
         episodeRowLayout: 'compact',
+        navLayout: 'bottom',
         updateSettings: this.updateSettings,
       },
     };
@@ -58,6 +56,7 @@ class AppWrapper extends React.Component<any, AppWrapperState> {
     const settings: Settings = {
       theme: fullSettings.theme,
       episodeRowLayout: fullSettings.episodeRowLayout,
+      navLayout: fullSettings.navLayout,
     };
 
     this.settingsService.setSettings(settings);
@@ -70,6 +69,10 @@ class AppWrapper extends React.Component<any, AppWrapperState> {
       },
       palette: {
         type: themeName,
+        primary: {
+          main: pink[300],
+        },
+        secondary: purple,
       },
     });
 
