@@ -11,6 +11,9 @@ import AppContext from '../components/AppContext';
 import Player from './Player';
 import SideNav from '../components/SideNav';
 import { EpisodeExtended } from '../models';
+import BottomNav from '../components/BottomNav';
+import SettingsContext from '../components/SettingsContext';
+import { SettingsWithMethods } from '../models/Settings';
 
 const styles: any = {
   routeContainer: {
@@ -27,13 +30,17 @@ type AppState = {
   navOpen: boolean;
   appTitle: string;
   activeEpisode?: EpisodeExtended;
+  fullPlayerOpen: boolean;
 };
 
 class App extends React.Component<AppProps, AppState> {
+  static contextType = SettingsContext;
+  context!: SettingsWithMethods;
   state: AppState = {
     navOpen: false,
     appTitle: 'FoxCasts',
     activeEpisode: undefined,
+    fullPlayerOpen: false,
   };
 
   setAppTitle = (title: string) => {
@@ -50,6 +57,14 @@ class App extends React.Component<AppProps, AppState> {
     this.setState({ activeEpisode: undefined });
   };
 
+  openFullPlayer = () => {
+    this.setState({ fullPlayerOpen: true });
+  };
+
+  closeFullPlayer = () => {
+    this.setState({ fullPlayerOpen: false });
+  };
+
   toggleNav = (open: boolean) => () => {
     this.setState({ navOpen: open });
   };
@@ -63,18 +78,28 @@ class App extends React.Component<AppProps, AppState> {
           value={{ setAppTitle: this.setAppTitle, setActiveEpisode: this.setActiveEpisode }}
         >
           <SideNav open={this.state.navOpen} onClose={this.toggleNav(false)} />
-          <AppBar position="sticky" color="default" className="app-bar">
-            <Toolbar>
-              <IconButton className="menu-icon">
-                <MenuIcon onClick={this.toggleNav(true)} />
-              </IconButton>
-              <Typography variant="h6">{this.state.appTitle}</Typography>
-            </Toolbar>
-          </AppBar>
+          {this.context.navLayout === 'side' && (
+            <AppBar position="sticky" color="default" className="app-bar">
+              <Toolbar>
+                <IconButton className="menu-icon">
+                  <MenuIcon onClick={this.toggleNav(true)} />
+                </IconButton>
+                <Typography variant="h6">{this.state.appTitle}</Typography>
+              </Toolbar>
+            </AppBar>
+          )}
           <div className={classes.routeContainer}>
             <Routes />
           </div>
-          <Player episode={this.state.activeEpisode} onStopPlayback={this.clearActiveEpisode} />
+          <Player
+            episode={this.state.activeEpisode}
+            fullPlayerOpen={this.state.fullPlayerOpen}
+            onStopPlayback={this.clearActiveEpisode}
+            onCloseFulllPlayer={this.closeFullPlayer}
+          />
+          {this.context.navLayout === 'bottom' && (
+            <BottomNav episode={this.state.activeEpisode} onOpenFullPlayer={this.openFullPlayer} />
+          )}
         </AppContext.Provider>
       </BrowserRouter>
     );

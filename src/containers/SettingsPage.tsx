@@ -1,5 +1,5 @@
 import React, { SyntheticEvent } from 'react';
-import { SettingsWithMethods, EpisodeRowLayout } from '../models/Settings';
+import { SettingsWithMethods, EpisodeRowLayout, NavLayout } from '../models/Settings';
 import SettingsContext from '../components/SettingsContext';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -21,6 +21,7 @@ type SettingsPageProps = WithStyles;
 type SettingsPageState = {
   theme: 'dark' | 'light';
   episodeRowLayout: EpisodeRowLayout;
+  navLayout: NavLayout;
 };
 
 class SettingsPage extends React.Component<SettingsPageProps, SettingsPageState> {
@@ -29,12 +30,14 @@ class SettingsPage extends React.Component<SettingsPageProps, SettingsPageState>
   state: SettingsPageState = {
     theme: 'dark',
     episodeRowLayout: 'default',
+    navLayout: 'bottom',
   };
 
   componentDidMount = () => {
     this.setState({
       theme: this.context.theme,
       episodeRowLayout: this.context.episodeRowLayout,
+      navLayout: this.context.navLayout,
     });
   };
 
@@ -61,13 +64,23 @@ class SettingsPage extends React.Component<SettingsPageProps, SettingsPageState>
           </NativeSelect>
         </FormControl>
         <FormControl className={classes.row}>
-          <InputLabel htmlFor="theme">Episode Row Layout</InputLabel>
+          <InputLabel htmlFor="episodeRowLayout">Episode Row Layout</InputLabel>
           <NativeSelect
             value={this.state.episodeRowLayout}
             onChange={this.handleSettingChange('episodeRowLayout')}
           >
             <option value="default">Default</option>
             <option value="compact">Compact</option>
+          </NativeSelect>
+        </FormControl>
+        <FormControl className={classes.row}>
+          <InputLabel htmlFor="navLayout">Navigation Layout</InputLabel>
+          <NativeSelect
+            value={this.state.navLayout}
+            onChange={this.handleSettingChange('navLayout')}
+          >
+            <option value="bottom">Bottom</option>
+            <option value="side">Side</option>
           </NativeSelect>
         </FormControl>
       </div>

@@ -11,6 +11,8 @@ import { EpisodeExtended } from '../models';
 import MiniPlayer from '../components/MiniPlayer';
 import FullPlayer from '../components/FullPlayer';
 import { withStyles, WithStyles } from '@material-ui/core';
+import SettingsContext from '../components/SettingsContext';
+import { SettingsWithMethods } from '../models/Settings';
 
 const podcastService = new PodcastService();
 
@@ -34,6 +36,8 @@ const styles: any = {
 type OwnProps = {
   episode?: EpisodeExtended;
   onStopPlayback: () => void;
+  fullPlayerOpen?: boolean;
+  onCloseFulllPlayer: () => void;
 };
 
 type PlayerProps = OwnProps & WithStyles;
@@ -50,6 +54,9 @@ function Transition(props: PlayerProps) {
 }
 
 class Player extends React.Component<PlayerProps, PlayerState> {
+  static contextType = SettingsContext;
+  context!: SettingsWithMethods;
+
   state = {
     isPlaying: false,
     isSmallPlayer: true,
@@ -111,6 +118,9 @@ class Player extends React.Component<PlayerProps, PlayerState> {
 
   onCloseFullPlayer = () => {
     this.setState({ isSmallPlayer: true });
+    if (this.props.onCloseFulllPlayer) {
+      this.props.onCloseFulllPlayer();
+    }
   };
 
   handleProgressChanged = (progress: number) => {
@@ -155,12 +165,14 @@ class Player extends React.Component<PlayerProps, PlayerState> {
   };
 
   render() {
+    console.log('<Player />', this.props);
     const { classes, episode } = this.props;
+    const disableSmallPlayer = this.context.navLayout === 'bottom';
     if (!episode) return null;
 
     return (
       <React.Fragment>
-        {this.state.isSmallPlayer && (
+        {!disableSmallPlayer && this.state.isSmallPlayer && (
           <MiniPlayer
             episode={episode}
             isPlaying={this.state.isPlaying}
@@ -172,7 +184,7 @@ class Player extends React.Component<PlayerProps, PlayerState> {
         )}
         <Dialog
           fullScreen
-          open={!this.state.isSmallPlayer}
+          open={!this.state.isSmallPlayer || this.props.fullPlayerOpen === true}
           onClose={this.onCloseFullPlayer}
           TransitionComponent={Transition}
           classes={{ paper: 'dialog-background' }}
@@ -188,7 +200,7 @@ class Player extends React.Component<PlayerProps, PlayerState> {
               </IconButton>
             </Toolbar>
           </AppBar>
-          {!this.state.isSmallPlayer && (
+          {(!this.state.isSmallPlayer || this.props.fullPlayerOpen) && (
             <FullPlayer
               episode={episode}
               isPlaying={this.state.isPlaying}

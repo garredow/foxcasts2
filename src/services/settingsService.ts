@@ -3,6 +3,7 @@ import { Settings } from '../models/Settings';
 const defaultSettings: Settings = {
   theme: 'dark',
   episodeRowLayout: 'default',
+  navLayout: 'bottom',
 };
 
 export class SettingsService {
