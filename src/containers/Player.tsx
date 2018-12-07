@@ -165,7 +165,6 @@ class Player extends React.Component<PlayerProps, PlayerState> {
   };
 
   render() {
-    console.log('<Player />', this.props);
     const { classes, episode } = this.props;
     const disableSmallPlayer = this.context.navLayout === 'bottom';
     if (!episode) return null;
