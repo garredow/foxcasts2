@@ -38,8 +38,9 @@ const styles: any = {
     marginBottom: '20px',
   },
   playbackButton: {
-    height: '64px',
-    width: '64px',
+    height: '78px',
+    width: '78px',
+    paddingTop: '6px',
   },
   playbackButtonIcon: {
     height: '64px',
