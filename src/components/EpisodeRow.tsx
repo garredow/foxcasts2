@@ -14,6 +14,9 @@ const styles: StyleRules = {
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
   },
+  coverArt: {
+    borderRadius: '3px',
+  },
 };
 
 type OwnProps = {
@@ -41,7 +44,7 @@ const EpisodeRow = ({
 
   return (
     <ListItem button onClick={onClick} className={isPlayed ? classes.played : ''}>
-      {avatar && <Avatar src={avatar} />}
+      {avatar && <Avatar src={avatar} classes={{ root: classes.coverArt }} />}
       <ListItemText primary={primary} secondary={secondary} classes={layoutStyles} />
     </ListItem>
   );
