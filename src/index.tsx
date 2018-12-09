@@ -74,6 +74,13 @@ class AppWrapper extends React.Component<any, AppWrapperState> {
         },
         secondary: purple,
       },
+      overrides: {
+        MuiBottomNavigationAction: {
+          root: {
+            minWidth: '60px',
+          },
+        },
+      },
     });
 
     return theme;
