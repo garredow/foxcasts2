@@ -54,7 +54,7 @@ class App extends React.Component<AppProps, AppState> {
   };
 
   clearActiveEpisode = () => {
-    this.setState({ activeEpisode: undefined });
+    this.setState({ activeEpisode: undefined, fullPlayerOpen: false });
   };
 
   openFullPlayer = () => {
