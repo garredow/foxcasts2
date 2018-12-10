@@ -21,16 +21,18 @@ import ProgressIcon from '@material-ui/icons/AvTimer';
 
 const styles: any = (theme: Theme) => {
   return {
-    root: {
+    navContainer: {
       position: 'fixed',
       bottom: 0,
       left: 0,
       right: 0,
       zIndex: 9999,
       borderTop: `1px solid ${theme.palette.divider}`,
+      backgroundColor: theme.palette.background.paper,
+      paddingBottom: 'var(--home-bar-spacing)',
     },
     filterDrawerPaper: {
-      paddingBottom: '60px',
+      paddingBottom: 'calc(60px + var(--home-bar-spacing))',
     },
   };
 };
@@ -113,28 +115,26 @@ class BottomNav extends React.Component<BottomNavProps, BottomNavState> {
 
     return (
       <React.Fragment>
-        <BottomNavigation
-          value={this.state.selectedTab}
-          className={classes.root}
-          onChange={this.handleTabChange}
-        >
-          <BottomNavigationAction label="Subs" icon={<AppsIcon />} value="subscriptions" />
-          <BottomNavigationAction label="Filters" icon={<ListIcon />} value="filters" />
-          <BottomNavigationAction
-            label="Play"
-            style={{ paddingTop: '2px' }}
-            icon={
-              episode ? (
-                <PlayerButton progress={75} episodeCover={episode.cover[100]} />
-              ) : (
-                <PlayIcon style={{ fontSize: '50px' }} />
-              )
-            }
-            value="nowPlaying"
-          />
-          <BottomNavigationAction label="Discover" icon={<SearchIcon />} value="discover" />
-          <BottomNavigationAction label="Settings" icon={<SettingsIcon />} value="settings" />
-        </BottomNavigation>
+        <div className={classes.navContainer}>
+          <BottomNavigation value={this.state.selectedTab} onChange={this.handleTabChange}>
+            <BottomNavigationAction label="Subs" icon={<AppsIcon />} value="subscriptions" />
+            <BottomNavigationAction label="Filters" icon={<ListIcon />} value="filters" />
+            <BottomNavigationAction
+              showLabel={false}
+              style={{ paddingTop: '2px' }}
+              icon={
+                episode ? (
+                  <PlayerButton progress={75} episodeCover={episode.cover[100]} />
+                ) : (
+                  <PlayIcon style={{ fontSize: '50px' }} />
+                )
+              }
+              value="nowPlaying"
+            />
+            <BottomNavigationAction label="Discover" icon={<SearchIcon />} value="discover" />
+            <BottomNavigationAction label="Settings" icon={<SettingsIcon />} value="settings" />
+          </BottomNavigation>
+        </div>
         <Drawer
           anchor="bottom"
           open={this.state.filterDrawerOpen}

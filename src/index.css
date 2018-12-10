@@ -1,5 +1,9 @@
 /* General styles */
 
+:root {
+  --home-bar-spacing: 0px;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -54,4 +58,27 @@ a {
 
 .padding-15 {
   padding: 15px;
+}
+
+/* iPhone fixes */
+
+/* iPhone Xs */
+@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+  :root {
+    --home-bar-spacing: 30px;
+  }
+}
+
+/* iPhone Xs Max */
+@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) {
+  :root {
+    --home-bar-spacing: 30px;
+  }
+}
+
+/* iPhone Xr */
+@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) {
+  :root {
+    --home-bar-spacing: 30px;
+  }
 }
