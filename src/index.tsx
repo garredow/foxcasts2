@@ -5,11 +5,12 @@ import App from './containers/App';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme, Theme } from '@material-ui/core/styles';
 import * as serviceWorker from './serviceWorker';
-import { Settings, SettingsWithMethods } from './models/Settings';
+import { Settings, SettingsWithMethods, ThemeName } from './models/Settings';
 import SettingsContext from './components/SettingsContext';
 import { SettingsService } from './services/settingsService';
 import pink from '@material-ui/core/colors/pink';
 import purple from '@material-ui/core/colors/purple';
+import { PaletteOptions } from '@material-ui/core/styles/createPalette';
 
 type AppWrapperState = {
   themeName: string;
@@ -62,18 +63,48 @@ class AppWrapper extends React.Component<any, AppWrapperState> {
     this.settingsService.setSettings(settings);
   };
 
-  createTheme = (themeName: 'dark' | 'light') => {
+  createTheme = (themeName: ThemeName) => {
+    let palette: PaletteOptions;
+
+    switch (themeName) {
+      case 'light':
+        palette = {
+          type: 'light',
+          primary: {
+            main: pink[300],
+          },
+        };
+        break;
+      case 'dark':
+        palette = {
+          type: 'dark',
+          primary: {
+            main: pink[300],
+          },
+          secondary: purple,
+        };
+        break;
+      case 'black':
+        palette = {
+          type: 'dark',
+          primary: {
+            main: pink[300],
+          },
+          secondary: purple,
+          background: {
+            default: '#000',
+            paper: '#101010',
+          },
+        };
+        break;
+      default:
+        palette = {};
+    }
     const theme = createMuiTheme({
       typography: {
         useNextVariants: true,
       },
-      palette: {
-        type: themeName,
-        primary: {
-          main: pink[300],
-        },
-        secondary: purple,
-      },
+      palette,
       overrides: {
         MuiBottomNavigationAction: {
           root: {

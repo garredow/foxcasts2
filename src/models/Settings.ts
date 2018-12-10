@@ -1,9 +1,10 @@
 export type Settings = {
-  theme: 'dark' | 'light';
+  theme: ThemeName;
   episodeRowLayout: EpisodeRowLayout;
   navLayout: NavLayout;
 };
 
+export type ThemeName = 'dark' | 'light' | 'black';
 export type EpisodeRowLayout = 'default' | 'compact';
 export type NavLayout = 'side' | 'bottom';
 

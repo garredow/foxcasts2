@@ -1,5 +1,5 @@
 import React, { SyntheticEvent } from 'react';
-import { SettingsWithMethods, EpisodeRowLayout, NavLayout } from '../models/Settings';
+import { SettingsWithMethods, Settings } from '../models/Settings';
 import SettingsContext from '../components/SettingsContext';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -18,11 +18,7 @@ const styles: any = {
 
 type SettingsPageProps = WithStyles;
 
-type SettingsPageState = {
-  theme: 'dark' | 'light';
-  episodeRowLayout: EpisodeRowLayout;
-  navLayout: NavLayout;
-};
+type SettingsPageState = Settings;
 
 class SettingsPage extends React.Component<SettingsPageProps, SettingsPageState> {
   static contextType = SettingsContext;
@@ -41,10 +37,6 @@ class SettingsPage extends React.Component<SettingsPageProps, SettingsPageState>
     });
   };
 
-  setTheme = (theme: 'light' | 'dark') => () => {
-    this.context.updateSettings({ theme });
-  };
-
   handleSettingChange = (settingName: string) => (ev: SyntheticEvent<HTMLSelectElement>) => {
     const setting = { [settingName]: ev.currentTarget.value as any };
     this.context.updateSettings(setting);
@@ -59,8 +51,9 @@ class SettingsPage extends React.Component<SettingsPageProps, SettingsPageState>
         <FormControl className={classes.row}>
           <InputLabel htmlFor="theme">Theme</InputLabel>
           <NativeSelect value={this.state.theme} onChange={this.handleSettingChange('theme')}>
-            <option value="dark">Dark</option>
             <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="black">Black</option>
           </NativeSelect>
         </FormControl>
         <FormControl className={classes.row}>
