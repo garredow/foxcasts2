@@ -1,11 +1,11 @@
-import React, { SyntheticEvent, FormEvent, DetailedHTMLFactory } from 'react';
+import React, { FormEvent } from 'react';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import Drawer from '@material-ui/core/Drawer';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles, Theme } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import PodcastService from '../services/podcastService';
 import ApiService from '../services/apiService';
@@ -13,12 +13,22 @@ import SearchResult from '../components/SearchResult';
 import PodcastPreview from '../components/PodcastPreview';
 import AppContext from '../components/AppContext';
 import { AppContextProps, ITunesPodcast } from '../models';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import CloseIcon from '@material-ui/icons/Close';
 
-const styles: any = {
+const styles: any = (theme: Theme) => ({
+  searchBox: {
+    padding: '10px 5px 5px 5px',
+    backgroundColor: theme.palette.background.default,
+    position: 'sticky',
+    top: 0,
+    zIndex: theme.zIndex.appBar,
+  },
   queryInput: {
     width: '100%',
   },
-};
+});
 
 type SearchPageProps = WithStyles & AppContextProps;
 
@@ -90,15 +100,17 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
 
     return (
       <div className="page-container">
-        <form onSubmit={this.search}>
-          <Input
-            placeholder="Query"
-            className={classes.queryInput}
-            onChange={this.handleQueryChange}
-            value={this.state.query}
-            endAdornment={<InputAdornment position="end">{searchBarIcon}</InputAdornment>}
-          />
-        </form>
+        <div className={classes.searchBox}>
+          <form onSubmit={this.search}>
+            <Input
+              placeholder="Query"
+              className={classes.queryInput}
+              onChange={this.handleQueryChange}
+              value={this.state.query}
+              endAdornment={<InputAdornment position="end">{searchBarIcon}</InputAdornment>}
+            />
+          </form>
+        </div>
         <List>
           {this.state.searchResults.map(result => (
             <SearchResult
@@ -109,6 +121,13 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
           ))}
         </List>
         <Drawer anchor="bottom" open={this.state.drawerOpen} onClose={this.toggleDrawer(false)}>
+          <AppBar position="sticky" className="app-bar">
+            <Toolbar>
+              <IconButton onClick={this.toggleDrawer(false)}>
+                <CloseIcon />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
           {this.state.selectedPodcast && (
             <PodcastPreview
               podcast={this.state.selectedPodcast}

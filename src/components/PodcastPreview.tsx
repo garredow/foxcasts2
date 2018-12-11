@@ -8,11 +8,12 @@ import ApiService from '../services/apiService';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles: any = (theme: any) => ({
   container: {
     padding: '15px',
-    height: '85vh',
+    minHeight: '100vh',
     display: 'grid',
     gridGap: '15px',
     gridAutoRows: 'min-content',
@@ -61,6 +62,9 @@ const styles: any = (theme: any) => ({
   },
   episodesContainer: {
     gridArea: 'episodesContainer',
+  },
+  episodesList: {
+    textAlign: 'center',
   },
 });
 
@@ -112,7 +116,7 @@ class PodcastPreview extends React.Component<PodcastPreviewProps, PodcastPreview
           </div>
           <div className={classes.actions}>
             <ProgressButton
-              variant="outlined"
+              variant="contained"
               disabled={this.state.subscribing || this.state.subscribed}
               loading={this.state.subscribing}
               onClick={this.subscribe(podcast.collectionId)}
@@ -127,7 +131,8 @@ class PodcastPreview extends React.Component<PodcastPreviewProps, PodcastPreview
           </Typography>
           <div className={classes.episodesContainer}>
             <Typography variant="subtitle1">Recent Episodes</Typography>
-            <List disablePadding={true}>
+            <List disablePadding={true} classes={{ root: classes.episodesList }}>
+              {this.state.episodes.length === 0 && <CircularProgress />}
               {this.state.episodes.map(episode => (
                 <ListItem key={episode.guid} disableGutters={true}>
                   <ListItemText primary={episode.title} secondary={episode.subTitle} />
