@@ -18,9 +18,10 @@ const styles: any = (theme: any) => ({
 });
 
 type OwnProps = {
-  variant: 'text' | 'flat' | 'outlined' | 'contained' | 'raised' | 'fab' | 'extendedFab';
-  disabled: boolean;
-  loading: boolean;
+  variant?: 'text' | 'flat' | 'outlined' | 'contained' | 'raised' | 'fab' | 'extendedFab';
+  color?: 'inherit' | 'primary' | 'secondary' | 'default';
+  disabled?: boolean;
+  loading?: boolean;
   onClick: (ev: React.MouseEvent) => void;
   children?: React.ReactNode;
 };
@@ -29,7 +30,12 @@ type ProgressButtonProps = OwnProps & WithStyles;
 
 const ProgressButton = (props: ProgressButtonProps) => (
   <div className={props.classes.root}>
-    <Button variant={props.variant || 'outlined'} disabled={props.disabled} onClick={props.onClick}>
+    <Button
+      variant={props.variant || 'outlined'}
+      color={props.color || 'primary'}
+      disabled={props.disabled}
+      onClick={props.onClick}
+    >
       {props.children}
     </Button>
     {props.loading && <CircularProgress size={24} className={props.classes.progress} />}
