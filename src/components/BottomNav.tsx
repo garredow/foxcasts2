@@ -51,6 +51,7 @@ const filters: Filter[] = [
 type OwnProps = {
   episode?: EpisodeExtended;
   onOpenFullPlayer: () => void;
+  onCloseFullPlayer: () => void;
 };
 type BottomNavProps = OwnProps & WithStyles & RouteComponentProps;
 
@@ -87,6 +88,8 @@ class BottomNav extends React.Component<BottomNavProps, BottomNavState> {
   };
 
   navigateTo = (page: string) => {
+    this.props.onCloseFullPlayer();
+
     switch (page) {
       case 'subscriptions':
         this.props.history.push('/');

@@ -98,7 +98,11 @@ class App extends React.Component<AppProps, AppState> {
             onCloseFulllPlayer={this.closeFullPlayer}
           />
           {this.context.navLayout === 'bottom' && (
-            <BottomNav episode={this.state.activeEpisode} onOpenFullPlayer={this.openFullPlayer} />
+            <BottomNav
+              episode={this.state.activeEpisode}
+              onOpenFullPlayer={this.openFullPlayer}
+              onCloseFullPlayer={this.closeFullPlayer}
+            />
           )}
         </AppContext.Provider>
       </BrowserRouter>
