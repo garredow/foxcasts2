@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import PlaylistPage from './containers/PlaylistPage';
 import Loading from './components/Loading';
@@ -30,12 +30,12 @@ const SettingsPage = Loadable({
 
 const Router = () => (
   <Switch>
-    <Route exact path="/" component={SubscriptionsPage} />
+    <Route path="/subscriptions" component={SubscriptionsPage} />
     <Route path="/search" component={SearchPage} />
     <Route path="/podcast/:id" component={PodcastDetailPage} />
     <Route path="/playlist/:playlist" component={PlaylistPage} />
     <Route path="/settings" component={SettingsPage} />
-    <Route component={SubscriptionsPage} />
+    <Redirect to="/subscriptions" />
   </Switch>
 );
 

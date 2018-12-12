@@ -19,7 +19,7 @@ interface ListItem {
 }
 
 const listItems: ListItem[] = [
-  { path: '/', title: 'Subscriptions', icon: <AppsIcon /> },
+  { path: '/subscriptions', title: 'Subscriptions', icon: <AppsIcon /> },
   { path: '/search', title: 'Search', icon: <SearchIcon /> },
 ];
 
