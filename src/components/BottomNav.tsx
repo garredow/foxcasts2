@@ -66,6 +66,23 @@ class BottomNav extends React.Component<BottomNavProps, BottomNavState> {
     filterDrawerOpen: false,
   };
 
+  componentDidMount = () => {
+    console.log('mounted', this.props.location.pathname);
+    this.setInitialActiveTab();
+  };
+
+  setInitialActiveTab = () => {
+    const pageToTabMap: { [page: string]: string } = {
+      subscriptions: 'subscriptions',
+      playlist: 'filters',
+      search: 'discover',
+      settings: 'settings',
+    };
+
+    const page = this.props.location.pathname.split('/')[1];
+    this.setState({ selectedTab: pageToTabMap[page] || 'subscriptions' });
+  };
+
   handleTabChange = (ev: any, selectedTab: any) => {
     if (selectedTab === 'nowPlaying') {
       this.props.onOpenFullPlayer();
@@ -92,7 +109,7 @@ class BottomNav extends React.Component<BottomNavProps, BottomNavState> {
 
     switch (page) {
       case 'subscriptions':
-        this.props.history.push('/');
+        this.props.history.push('/subscriptions');
         break;
       case 'discover':
         this.props.history.push('/search');
