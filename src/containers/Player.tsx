@@ -68,7 +68,7 @@ class Player extends React.Component<PlayerProps, PlayerState> {
 
   componentDidUpdate({ episode: previousEpisode }: any) {
     const episode = this.props.episode;
-    if (!episode) return;
+    if (!episode || !this.audioRef.audioEl) return;
 
     const isNewEpisode = !previousEpisode || previousEpisode.id !== episode.id;
 
