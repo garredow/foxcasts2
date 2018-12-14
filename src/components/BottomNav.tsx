@@ -67,7 +67,6 @@ class BottomNav extends React.Component<BottomNavProps, BottomNavState> {
   };
 
   componentDidMount = () => {
-    console.log('mounted', this.props.location.pathname);
     this.setInitialActiveTab();
   };
 
