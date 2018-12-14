@@ -61,6 +61,7 @@ const styles: any = (theme: Theme) => ({
 });
 
 type OwnProps = {
+  currentColorHex?: string;
   onSelectColor: (colorHex: string) => void;
 };
 
@@ -77,7 +78,19 @@ class ColorPicker extends React.Component<ColorPickerProps, ColorPickerState> {
   };
 
   componentDidMount = () => {
-    this.getVariants('pink');
+    let colorFamily = this.findColorFamily(this.props.currentColorHex);
+    this.getVariants(colorFamily || 'pink');
+  };
+
+  findColorFamily = (colorHex?: string) => {
+    let foundColorFamily;
+    Object.entries(muiColors).forEach(([colorFamily, variantObj]) => {
+      if (Object.values(variantObj).includes(colorHex)) {
+        foundColorFamily = colorFamily;
+      }
+    });
+
+    return foundColorFamily;
   };
 
   handleColorFamilyChange = (ev: SyntheticEvent<HTMLSelectElement>) => {

@@ -35,6 +35,7 @@ type SettingsPageProps = WithStyles;
 type OwnState = {
   colorPickerOpen: boolean;
   colorPickerField?: string;
+  colorPickerCurrentColor?: string;
 };
 type SettingsPageState = OwnState & Settings;
 
@@ -66,12 +67,16 @@ class SettingsPage extends React.Component<SettingsPageProps, SettingsPageState>
     this.setState(setting as any);
   };
 
-  openColorPicker = (colorPickerField: string) => () => {
-    this.setState({ colorPickerField, colorPickerOpen: true });
+  openColorPicker = (colorPickerField: string, colorPickerCurrentColor: string) => () => {
+    this.setState({ colorPickerField, colorPickerCurrentColor, colorPickerOpen: true });
   };
 
   closeColorPicker = () => {
-    this.setState({ colorPickerField: undefined, colorPickerOpen: false });
+    this.setState({
+      colorPickerField: undefined,
+      colorPickerCurrentColor: undefined,
+      colorPickerOpen: false,
+    });
   };
 
   handleColorPicked = (colorHex: string) => {
@@ -104,7 +109,7 @@ class SettingsPage extends React.Component<SettingsPageProps, SettingsPageState>
           <FormControl className={classes.row}>
             <Button
               style={{ backgroundColor: this.state.themePrimary }}
-              onClick={this.openColorPicker('themePrimary')}
+              onClick={this.openColorPicker('themePrimary', this.state.themePrimary)}
             >
               Primary Color
             </Button>
@@ -112,7 +117,7 @@ class SettingsPage extends React.Component<SettingsPageProps, SettingsPageState>
           <FormControl className={classes.row}>
             <Button
               style={{ backgroundColor: this.state.themeSecondary }}
-              onClick={this.openColorPicker('themeSecondary')}
+              onClick={this.openColorPicker('themeSecondary', this.state.themeSecondary)}
             >
               Secondary Color
             </Button>
@@ -153,7 +158,10 @@ class SettingsPage extends React.Component<SettingsPageProps, SettingsPageState>
               </IconButton>
             </Toolbar>
           </AppBar>
-          <ColorPicker onSelectColor={this.handleColorPicked} />
+          <ColorPicker
+            currentColorHex={this.state.colorPickerCurrentColor}
+            onSelectColor={this.handleColorPicked}
+          />
         </Drawer>
       </React.Fragment>
     );
