@@ -1,5 +1,7 @@
 export type Settings = {
   theme: ThemeName;
+  themePrimary: string;
+  themeSecondary: string;
   episodeRowLayout: EpisodeRowLayout;
   navLayout: NavLayout;
 };

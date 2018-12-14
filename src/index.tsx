@@ -27,9 +27,11 @@ class AppWrapper extends React.Component<any, AppWrapperState> {
 
     this.state = {
       themeName: 'dark',
-      theme: this.createTheme('dark'),
+      theme: this.createTheme('dark', '#f06292', '#d500f9'),
       settings: {
         theme: 'dark',
+        themePrimary: '#f06292',
+        themeSecondary: '#d500f9',
         episodeRowLayout: 'compact',
         navLayout: 'bottom',
         updateSettings: this.updateSettings,
@@ -48,7 +50,11 @@ class AppWrapper extends React.Component<any, AppWrapperState> {
     const newSettings: SettingsWithMethods = Object.assign({}, this.state.settings, settings);
     this.saveSettings(newSettings);
 
-    const theme = this.createTheme(newSettings.theme);
+    const theme = this.createTheme(
+      newSettings.theme,
+      newSettings.themePrimary,
+      newSettings.themeSecondary
+    );
 
     this.setState({ settings: newSettings, theme });
   };
@@ -56,6 +62,8 @@ class AppWrapper extends React.Component<any, AppWrapperState> {
   saveSettings = (fullSettings: SettingsWithMethods) => {
     const settings: Settings = {
       theme: fullSettings.theme,
+      themePrimary: fullSettings.themePrimary,
+      themeSecondary: fullSettings.themeSecondary,
       episodeRowLayout: fullSettings.episodeRowLayout,
       navLayout: fullSettings.navLayout,
     };
@@ -63,38 +71,28 @@ class AppWrapper extends React.Component<any, AppWrapperState> {
     this.settingsService.setSettings(settings);
   };
 
-  createTheme = (themeName: ThemeName) => {
-    let palette: PaletteOptions;
+  createTheme = (themeName: ThemeName, primaryColor: string, secondaryColor: string) => {
+    let palette: PaletteOptions = {
+      primary: {
+        main: primaryColor,
+      },
+      secondary: {
+        main: secondaryColor,
+      },
+    };
 
     switch (themeName) {
       case 'light':
-        palette = {
-          type: 'light',
-          primary: {
-            main: pink[300],
-          },
-        };
+        palette.type = 'light';
         break;
       case 'dark':
-        palette = {
-          type: 'dark',
-          primary: {
-            main: pink[300],
-          },
-          secondary: purple,
-        };
+        palette.type = 'dark';
         break;
       case 'black':
-        palette = {
-          type: 'dark',
-          primary: {
-            main: pink[300],
-          },
-          secondary: purple,
-          background: {
-            default: '#000',
-            paper: '#101010',
-          },
+        palette.type = 'dark';
+        palette.background = {
+          default: '#000',
+          paper: '#101010',
         };
         break;
       default:
