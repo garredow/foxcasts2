@@ -8,6 +8,8 @@ import { Podcast, EpisodeExtended, AppContextProps } from '../models';
 import AppContext from '../components/AppContext';
 import EpisodeList from '../components/EpisodeList';
 import DatabaseService from '../services/databaseService';
+import { withRouter, RouteComponentProps } from 'react-router';
+import compose from 'recompose/compose';
 
 const podcastService = new PodcastService();
 const dbService = new DatabaseService();
@@ -48,7 +50,7 @@ type OwnProps = {
   match: any;
 };
 
-type PodcastDetailPageProps = OwnProps & WithStyles & AppContextProps;
+type PodcastDetailPageProps = OwnProps & WithStyles & RouteComponentProps & AppContextProps;
 
 type PodcastDetailPageState = {
   podcast?: Podcast;
@@ -76,9 +78,10 @@ class PodcastDetailPage extends React.Component<PodcastDetailPageProps, PodcastD
     this.setState({ confirmDialogOpen: true });
   };
 
-  onDialogClose = (result: 'confirm' | 'cancel') => {
+  onDialogClose = async (result: 'confirm' | 'cancel') => {
     if (result === 'confirm' && this.state.podcast) {
-      podcastService.unsubscribe(this.state.podcast.id);
+      await podcastService.unsubscribe(this.state.podcast.id);
+      return this.props.history.goBack();
     }
     this.setState({ confirmDialogOpen: false });
   };
@@ -167,4 +170,7 @@ const ComponentWithContext = (props: PodcastDetailPageProps) => (
   </AppContext.Consumer>
 );
 
-export default withStyles(styles)(ComponentWithContext);
+export default compose<any, any>(
+  withStyles(styles),
+  withRouter
+)(ComponentWithContext);
