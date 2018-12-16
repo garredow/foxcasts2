@@ -19,6 +19,8 @@ const styles: any = {
   routeContainer: {
     paddingBottom: '30px',
     marginBottom: '30px',
+    maxWidth: '980px',
+    margin: '0 auto',
   },
 };
 
