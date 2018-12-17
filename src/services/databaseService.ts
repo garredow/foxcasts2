@@ -72,7 +72,10 @@ class DatabaseService {
   }
 
   async getPodcasts(): Promise<Podcast[]> {
-    const podcasts: Podcast[] = await this.db.table('podcasts').toArray();
+    const podcasts: Podcast[] = await this.db
+      .table('podcasts')
+      .toCollection()
+      .sortBy('title');
     return podcasts;
   }
 
