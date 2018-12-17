@@ -9,23 +9,25 @@ import PauseIcon from '@material-ui/icons/Pause';
 import JumpBackIcon from '@material-ui/icons/Replay10';
 import JumpForwardIcon from '@material-ui/icons/Forward30';
 import formatTime from '../utils/formatTime';
-import { Episode, EpisodeExtended } from '../models';
+import { EpisodeExtended } from '../models';
 
 const styles: any = {
   root: {
     textAlign: 'center',
-    padding: '15px',
+    paddingBottom: '70px',
   },
   detailContainer: {
     marginBottom: '30px',
+    padding: '0 15px',
   },
   cover: {
     width: '100%',
-    maxWidth: '300px',
-    padding: '15px 15px 25px 15px',
+    maxWidth: '430px',
+    marginBottom: '15px',
   },
   progressContainer: {
     marginBottom: '20px',
+    padding: '0 15px',
   },
   times: {
     display: 'flex',
@@ -36,6 +38,7 @@ const styles: any = {
     display: 'flex',
     justifyContent: 'space-evenly',
     marginBottom: '20px',
+    padding: '0 15px',
   },
   playbackButton: {
     height: '78px',
@@ -87,10 +90,7 @@ class FullPlayer extends React.Component<FullPlayerProps, any> {
 
     return (
       <div className={classes.root}>
-        <div className={classes.detailContainer}>
-          <img className={classes.cover} src={episode.cover['600']} alt={episode.title} />
-          <Typography variant="h5">{episode.title}</Typography>
-        </div>
+        <img className={classes.cover} src={episode.cover['600']} alt={episode.title} />
         <div className={classes.progressContainer}>
           <LinearProgress
             variant="determinate"
@@ -117,7 +117,7 @@ class FullPlayer extends React.Component<FullPlayerProps, any> {
             <JumpForwardIcon className={classes.playbackButtonIcon} />
           </IconButton>
         </div>
-        <Button variant="outlined" color="secondary" onClick={this.props.onCloseEpisode}>
+        <Button variant="outlined" color="primary" onClick={this.props.onCloseEpisode}>
           Stop Playback
         </Button>
       </div>

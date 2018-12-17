@@ -2,7 +2,6 @@ import React, { SyntheticEvent } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
-import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CloseIcon from '@material-ui/icons/Close';
 import AudioPlayer from 'react-audio-player';
@@ -10,7 +9,7 @@ import PodcastService from '../services/podcastService';
 import { EpisodeExtended } from '../models';
 import MiniPlayer from '../components/MiniPlayer';
 import FullPlayer from '../components/FullPlayer';
-import { withStyles, WithStyles } from '@material-ui/core';
+import { withStyles, WithStyles, Typography } from '@material-ui/core';
 import SettingsContext from '../components/SettingsContext';
 import { SettingsWithMethods } from '../models/Settings';
 
@@ -30,6 +29,11 @@ const styles: any = {
     filter: 'blur(50px)',
     opacity: 0.2,
     zIndex: -1,
+  },
+  episodeTitle: {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
   },
 };
 
@@ -192,13 +196,14 @@ class Player extends React.Component<PlayerProps, PlayerState> {
             style={{ backgroundImage: `url('${episode.cover[600]}')` }}
             className={classes.backdrop}
           />
-          <AppBar position="sticky" className="app-bar">
-            <Toolbar>
-              <IconButton onClick={this.onCloseFullPlayer}>
-                <CloseIcon />
-              </IconButton>
-            </Toolbar>
-          </AppBar>
+          <Toolbar>
+            <IconButton onClick={this.onCloseFullPlayer}>
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes.episodeTitle}>
+              {episode.title}
+            </Typography>
+          </Toolbar>
           {(!this.state.isSmallPlayer || this.props.fullPlayerOpen) && (
             <FullPlayer
               episode={episode}
