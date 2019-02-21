@@ -17,7 +17,7 @@ type EpisodeDialogProps = {
   onTogglePlayed: (event: any) => void;
 };
 
-function Transition(props: EpisodeDialogProps) {
+function Transition(props: any) {
   return <Slide direction="up" {...props} />;
 }
 

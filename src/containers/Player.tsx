@@ -53,7 +53,7 @@ type PlayerState = {
   duration: number;
 };
 
-function Transition(props: PlayerProps) {
+function Transition(props: any) {
   return <Slide direction="up" {...props} />;
 }
 
