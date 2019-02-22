@@ -1,8 +1,9 @@
 import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { withStyles, WithStyles, Theme } from '@material-ui/core';
+import { Theme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 
-const styles: any = (theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     position: 'relative',
   },
@@ -20,19 +21,22 @@ const styles: any = (theme: Theme) => ({
     height: '50px !important',
     width: '50px !important',
   },
-});
+}));
 
-type OwnProps = {
+type PlayerButtonProps = {
   progress: number;
   episodeCover?: string;
 };
-type PlayerButtonProps = OwnProps & WithStyles;
 
-const PlayerButton = ({ classes, progress, episodeCover }: PlayerButtonProps) => (
-  <div className={classes.root}>
-    <img src={episodeCover} alt="" className={classes.cover} />
-    <CircularProgress variant="static" value={progress} className={classes.progress} />
-  </div>
-);
+function PlayerButton({ progress, episodeCover }: PlayerButtonProps) {
+  const classes = useStyles();
 
-export default withStyles(styles)(PlayerButton);
+  return (
+    <div className={classes.root}>
+      <img src={episodeCover} alt="" className={classes.cover} />
+      <CircularProgress variant="static" value={progress} className={classes.progress} />
+    </div>
+  );
+}
+
+export default PlayerButton;
