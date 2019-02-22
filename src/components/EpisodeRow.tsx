@@ -2,10 +2,10 @@ import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemText from '@material-ui/core/ListItemText';
-import { withStyles, WithStyles, StyleRules } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { EpisodeRowLayout } from '../models/Settings';
 
-const styles: StyleRules = {
+const useStyles = makeStyles({
   played: {
     opacity: 0.5,
   },
@@ -17,9 +17,9 @@ const styles: StyleRules = {
   coverArt: {
     borderRadius: '3px',
   },
-};
+});
 
-type OwnProps = {
+type EpisodeRowProps = {
   primary: string;
   secondary: string;
   avatar?: string;
@@ -28,26 +28,20 @@ type OwnProps = {
   onClick: (ev: any) => void;
 };
 
-type EpisodeRowProps = OwnProps & WithStyles;
+function EpisodeRow(props: EpisodeRowProps) {
+  const classes = useStyles();
 
-const EpisodeRow = ({
-  avatar,
-  primary,
-  secondary,
-  isPlayed,
-  layout = 'compact',
-  onClick,
-  classes,
-}: EpisodeRowProps) => {
   const layoutStyles =
-    layout === 'compact' ? { primary: classes.compactLine, secondary: classes.compactLine } : {};
+    props.layout === 'compact'
+      ? { primary: classes.compactLine, secondary: classes.compactLine }
+      : {};
 
   return (
-    <ListItem button onClick={onClick} className={isPlayed ? classes.played : ''}>
-      {avatar && <Avatar src={avatar} classes={{ root: classes.coverArt }} />}
-      <ListItemText primary={primary} secondary={secondary} classes={layoutStyles} />
+    <ListItem button onClick={props.onClick} className={props.isPlayed ? classes.played : ''}>
+      {props.avatar && <Avatar src={props.avatar} classes={{ root: classes.coverArt }} />}
+      <ListItemText primary={props.primary} secondary={props.secondary} classes={layoutStyles} />
     </ListItem>
   );
-};
+}
 
-export default withStyles(styles)(EpisodeRow);
+export default EpisodeRow;
