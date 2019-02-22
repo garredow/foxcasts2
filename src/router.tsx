@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
-import PlaylistPage from './containers/PlaylistPage';
 import Loading from './components/Loading';
 
 const SubscriptionsPage = Loadable({
@@ -18,6 +17,12 @@ const SearchPage = Loadable({
 
 const PodcastDetailPage = Loadable({
   loader: () => import('./containers/PodcastDetailPage'),
+  loading: Loading,
+  delay: 300,
+});
+
+const PlaylistPage = Loadable({
+  loader: () => import('./containers/PlaylistPage'),
   loading: Loading,
   delay: 300,
 });
