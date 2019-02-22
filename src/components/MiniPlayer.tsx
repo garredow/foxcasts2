@@ -4,10 +4,11 @@ import PauseIcon from '@material-ui/icons/Pause';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { withStyles, WithStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@material-ui/core/styles';
 import { EpisodeExtended } from '../models';
+import { makeStyles } from '@material-ui/styles';
 
-const styles: any = (theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     position: 'fixed',
     bottom: 0,
@@ -35,9 +36,9 @@ const styles: any = (theme: Theme) => ({
     display: 'flex',
     flexDirection: 'column',
   },
-});
+}));
 
-type OwnProps = {
+type MiniPlayerProps = {
   episode: EpisodeExtended;
   isPlaying: boolean;
   duration: number;
@@ -46,38 +47,35 @@ type OwnProps = {
   onTogglePlaying: (ev: any) => void;
 };
 
-type MiniPlayerProps = OwnProps & WithStyles;
+function MiniPlayer(props: MiniPlayerProps) {
+  const { episode, progress, duration } = props;
+  const classes = useStyles();
+  if (!episode) return null;
 
-class MiniPlayer extends React.Component<MiniPlayerProps, any> {
-  render() {
-    const { classes, episode, progress, duration } = this.props;
-    if (!episode) return null;
-
-    return (
-      <div className={classes.root} onClick={this.props.onClick}>
-        <LinearProgress
-          variant="determinate"
-          value={Math.floor((progress / duration) * 100)}
-          color="primary"
-          className={classes.progressBar}
-        />
-        <div className={classes.content}>
-          <img src={episode.cover['60']} alt="cover" className={classes.cover} />
-          <div className={classes.detailContainer}>
-            <Typography variant="subtitle1" noWrap>
-              {episode.title}
-            </Typography>
-            <div>
-              <Typography noWrap>{episode.author}</Typography>
-            </div>
+  return (
+    <div className={classes.root} onClick={props.onClick}>
+      <LinearProgress
+        variant="determinate"
+        value={Math.floor((progress / duration) * 100)}
+        color="primary"
+        className={classes.progressBar}
+      />
+      <div className={classes.content}>
+        <img src={episode.cover['60']} alt="cover" className={classes.cover} />
+        <div className={classes.detailContainer}>
+          <Typography variant="subtitle1" noWrap>
+            {episode.title}
+          </Typography>
+          <div>
+            <Typography noWrap>{episode.author}</Typography>
           </div>
-          <IconButton onClick={this.props.onTogglePlaying}>
-            {this.props.isPlaying ? <PauseIcon /> : <PlayIcon />}
-          </IconButton>
         </div>
+        <IconButton onClick={props.onTogglePlaying}>
+          {props.isPlaying ? <PauseIcon /> : <PlayIcon />}
+        </IconButton>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-export default withStyles(styles)(MiniPlayer);
+export default MiniPlayer;
