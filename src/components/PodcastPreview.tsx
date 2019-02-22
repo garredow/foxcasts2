@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
 import PodcastService from '../services/podcastService';
 import ProgressButton from './ProgressButton';
 import { ITunesPodcast, Episode } from '../models';
@@ -9,8 +8,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/styles';
 
-const styles: any = (theme: any) => ({
+const useStyles = makeStyles((theme: any) => ({
   container: {
     padding: '15px',
     minHeight: '100vh',
@@ -66,84 +66,78 @@ const styles: any = (theme: any) => ({
   episodesList: {
     textAlign: 'center',
   },
-});
+}));
 
-type OwnProps = {
+type PodcastPreviewProps = {
   podcast: ITunesPodcast;
   onSubscribe: () => void;
 };
 
-type PodcastPreviewProps = OwnProps & WithStyles;
+const podcastService = new PodcastService();
+const apiService = new ApiService();
 
-type PodcastPreviewState = {
-  subscribing: boolean;
-  subscribed: boolean;
-  episodes: Episode[];
-};
+function PodcastPreview({ podcast, onSubscribe }: PodcastPreviewProps) {
+  const [subscribing, setSubscribing] = useState<boolean>(false);
+  const [subscribed, setSubscribed] = useState<boolean>(false);
+  const [episodes, setEpisodes] = useState<Episode[]>([]);
 
-class PodcastPreview extends React.Component<PodcastPreviewProps, PodcastPreviewState> {
-  state: PodcastPreviewState = { subscribing: false, subscribed: false, episodes: [] };
+  const classes = useStyles();
 
-  private podcastService = new PodcastService();
-  private apiService = new ApiService();
-
-  componentDidMount() {
-    const { collectionId, feedUrl } = this.props.podcast;
-    this.podcastService.getPodcastById(collectionId).then(podcast => {
-      this.setState({ subscribed: !!podcast });
+  useEffect(() => {
+    const { collectionId, feedUrl } = podcast;
+    podcastService.getPodcastById(collectionId).then(podcast => {
+      setSubscribed(!!podcast);
     });
-    this.apiService.getEpisodes(feedUrl).then(episodes => {
-      this.setState({ episodes: episodes.slice(0, 10) });
+    apiService.getEpisodes(feedUrl).then(episodes => {
+      setEpisodes(episodes.slice(0, 10));
     });
-  }
+  }, []);
 
-  subscribe = (podcastId: number) => () => {
-    this.setState({ subscribing: true });
-    this.podcastService.subscribe(podcastId).then(() => {
-      this.setState({ subscribing: false, subscribed: true });
+  const subscribe = (podcastId: number) => () => {
+    setSubscribing(true);
+    podcastService.subscribe(podcastId).then(() => {
+      setSubscribing(false);
+      setSubscribed(true);
     });
   };
 
-  render() {
-    const { classes, podcast } = this.props;
-    return (
-      <React.Fragment>
-        <div className={classes.container}>
-          <img src={podcast.artworkUrl600} className={classes.cover} alt={podcast.collectionName} />
-          <div className={classes.titleArtist}>
-            <Typography variant="h6">{podcast.collectionName}</Typography>
-            <Typography variant="subtitle1">{podcast.artistName}</Typography>
-          </div>
-          <div className={classes.actions}>
-            <ProgressButton
-              variant="contained"
-              disabled={this.state.subscribing || this.state.subscribed}
-              loading={this.state.subscribing}
-              onClick={this.subscribe(podcast.collectionId)}
-            >
-              {this.state.subscribed ? 'Subscribed' : 'Subscribe'}
-            </ProgressButton>
-          </div>
-          <Typography className={classes.description}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi feugiat tortor ut tempor
-            ultrices. Donec in accumsan quam. Donec a orci sed odio rhoncus sodales sit amet nec
-            ligula.
-          </Typography>
-          <div className={classes.episodesContainer}>
-            <Typography variant="subtitle1">Recent Episodes</Typography>
-            <List disablePadding={true} classes={{ root: classes.episodesList }}>
-              {this.state.episodes.length === 0 && <CircularProgress />}
-              {this.state.episodes.map(episode => (
-                <ListItem key={episode.guid} disableGutters={true}>
-                  <ListItemText primary={episode.title} secondary={episode.subTitle} />
-                </ListItem>
-              ))}
-            </List>
-          </div>
+  return (
+    <React.Fragment>
+      <div className={classes.container}>
+        <img src={podcast.artworkUrl600} className={classes.cover} alt={podcast.collectionName} />
+        <div className={classes.titleArtist}>
+          <Typography variant="h6">{podcast.collectionName}</Typography>
+          <Typography variant="subtitle1">{podcast.artistName}</Typography>
         </div>
-      </React.Fragment>
-    );
-  }
+        <div className={classes.actions}>
+          <ProgressButton
+            variant="contained"
+            disabled={subscribing || subscribed}
+            loading={subscribing}
+            onClick={subscribe(podcast.collectionId)}
+          >
+            {subscribed ? 'Subscribed' : 'Subscribe'}
+          </ProgressButton>
+        </div>
+        <Typography className={classes.description}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi feugiat tortor ut tempor
+          ultrices. Donec in accumsan quam. Donec a orci sed odio rhoncus sodales sit amet nec
+          ligula.
+        </Typography>
+        <div className={classes.episodesContainer}>
+          <Typography variant="subtitle1">Recent Episodes</Typography>
+          <List disablePadding={true} classes={{ root: classes.episodesList }}>
+            {episodes.length === 0 && <CircularProgress />}
+            {episodes.map(episode => (
+              <ListItem key={episode.guid} disableGutters={true}>
+                <ListItemText primary={episode.title} secondary={episode.subTitle} />
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      </div>
+    </React.Fragment>
+  );
 }
 
-export default withStyles(styles)(PodcastPreview);
+export default PodcastPreview;
