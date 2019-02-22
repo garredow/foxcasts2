@@ -1,9 +1,10 @@
 import React from 'react';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
+import { Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/styles';
 
-const styles: any = (theme: any) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     margin: theme.spacing.unit,
     position: 'relative',
@@ -15,9 +16,9 @@ const styles: any = (theme: any) => ({
     marginTop: -12,
     marginLeft: -12,
   },
-});
+}));
 
-type OwnProps = {
+type ProgressButtonProps = {
   variant?: 'text' | 'flat' | 'outlined' | 'contained' | 'raised' | 'fab' | 'extendedFab';
   color?: 'inherit' | 'primary' | 'secondary' | 'default';
   disabled?: boolean;
@@ -26,20 +27,22 @@ type OwnProps = {
   children?: React.ReactNode;
 };
 
-type ProgressButtonProps = OwnProps & WithStyles;
+function ProgressButton(props: ProgressButtonProps) {
+  const classes = useStyles();
 
-const ProgressButton = (props: ProgressButtonProps) => (
-  <div className={props.classes.root}>
-    <Button
-      variant={props.variant || 'outlined'}
-      color={props.color || 'primary'}
-      disabled={props.disabled}
-      onClick={props.onClick}
-    >
-      {props.children}
-    </Button>
-    {props.loading && <CircularProgress size={24} className={props.classes.progress} />}
-  </div>
-);
+  return (
+    <div className={classes.root}>
+      <Button
+        variant={props.variant || 'outlined'}
+        color={props.color || 'primary'}
+        disabled={props.disabled}
+        onClick={props.onClick}
+      >
+        {props.children}
+      </Button>
+      {props.loading && <CircularProgress size={24} className={classes.progress} />}
+    </div>
+  );
+}
 
-export default withStyles(styles)(ProgressButton);
+export default ProgressButton;
