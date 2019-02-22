@@ -3,26 +3,28 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import { ITunesPodcast } from '../models';
-import { StyleRules, withStyles, WithStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 
-const styles: StyleRules = {
+const useStyles = makeStyles({
   coverArt: {
     borderRadius: '3px',
   },
-};
+});
 
-type OwnProps = {
+type SearchResultProps = {
   podcast: ITunesPodcast;
   onClick: (ev: React.MouseEvent) => void;
 };
 
-type SearchResultProps = OwnProps & WithStyles;
+function SearchResult({ podcast, onClick }: SearchResultProps) {
+  const classes = useStyles();
 
-const SearchResult = ({ classes, podcast, onClick }: SearchResultProps) => (
-  <ListItem button onClick={onClick}>
-    <Avatar src={podcast.artworkUrl100} classes={{ root: classes.coverArt }} />
-    <ListItemText primary={podcast.collectionName} secondary={podcast.artistName} />
-  </ListItem>
-);
+  return (
+    <ListItem button onClick={onClick}>
+      <Avatar src={podcast.artworkUrl100} classes={{ root: classes.coverArt }} />
+      <ListItemText primary={podcast.collectionName} secondary={podcast.artistName} />
+    </ListItem>
+  );
+}
 
-export default withStyles(styles)(SearchResult);
+export default SearchResult;
