@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import React, { SyntheticEvent, useContext, useState, useEffect } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
@@ -9,13 +9,13 @@ import PodcastService from '../services/podcastService';
 import { EpisodeExtended } from '../models';
 import MiniPlayer from '../components/MiniPlayer';
 import FullPlayer from '../components/FullPlayer';
-import { withStyles, WithStyles, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import SettingsContext from '../components/SettingsContext';
-import { SettingsWithMethods } from '../models/Settings';
+import { makeStyles } from '@material-ui/styles';
 
 const podcastService = new PodcastService();
 
-const styles: any = {
+const useStyles = makeStyles({
   backdrop: {
     background: 'red',
     position: 'fixed',
@@ -35,200 +35,174 @@ const styles: any = {
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
   },
-};
+});
 
-type OwnProps = {
+function Transition(props: any) {
+  return <Slide direction="up" {...props} />;
+}
+
+type PlayerProps = {
   episode?: EpisodeExtended;
   onStopPlayback: () => void;
   fullPlayerOpen?: boolean;
   onCloseFulllPlayer: () => void;
 };
 
-type PlayerProps = OwnProps & WithStyles;
+function Player(props: PlayerProps) {
+  const { episode } = props;
+  if (!episode) return null;
 
-type PlayerState = {
-  isPlaying: boolean;
-  isSmallPlayer: boolean;
-  progress: number;
-  duration: number;
-};
+  const context = useContext(SettingsContext);
+  const classes = useStyles();
 
-function Transition(props: any) {
-  return <Slide direction="up" {...props} />;
-}
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isSmallPlayer, setIsSmallPlayer] = useState<boolean>(true);
+  const [progress, setProgress] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(0);
 
-class Player extends React.Component<PlayerProps, PlayerState> {
-  static contextType = SettingsContext;
-  context!: SettingsWithMethods;
+  let audioRef: any;
 
-  state = {
-    isPlaying: false,
-    isSmallPlayer: true,
-    progress: 0,
-    duration: 0,
+  useEffect(() => {
+    if (!episode) return;
+
+    audioRef.audioEl.currentTime = episode.progress;
+
+    setIsPlaying(true);
+    setIsSmallPlayer(true);
+    setProgress(episode.progress);
+    setDuration(episode.duration);
+
+    handleTogglePlaying();
+  }, [episode]);
+
+  const resetPlayerState = () => {
+    setIsPlaying(true);
+    setIsSmallPlayer(false);
+    setProgress(0);
+    setDuration(0);
   };
 
-  audioRef: any;
-
-  componentDidUpdate({ episode: previousEpisode }: any) {
-    const episode = this.props.episode;
-    if (!episode || !this.audioRef.audioEl) return;
-
-    const isNewEpisode = !previousEpisode || previousEpisode.id !== episode.id;
-
-    if (isNewEpisode) {
-      this.audioRef.audioEl.currentTime = episode.progress;
-      this.setState(
-        {
-          isSmallPlayer: true,
-          isPlaying: false,
-          progress: episode.progress,
-          duration: episode.duration,
-        },
-        () => {
-          this.handleTogglePlaying();
-        }
-      );
-    }
-  }
-
-  resetPlayerState = () => {
-    this.setState({
-      isSmallPlayer: true,
-      isPlaying: false,
-      progress: 0,
-      duration: 0,
-    });
-  };
-
-  handleTogglePlaying = (ev?: MouseEvent) => {
+  const handleTogglePlaying = (ev?: MouseEvent) => {
     if (ev) {
       ev.stopPropagation();
     }
 
-    const isPlaying = !this.state.isPlaying;
-    this.setState({ isPlaying });
-    isPlaying ? this.audioRef.audioEl.play() : this.audioRef.audioEl.pause();
+    const playing = !isPlaying;
+    setIsPlaying(playing);
+    playing ? audioRef.audioEl.play() : audioRef.audioEl.pause();
   };
 
-  handleCloseEpisode = () => {
-    this.resetPlayerState();
-    this.props.onStopPlayback();
+  const handleCloseEpisode = () => {
+    resetPlayerState();
+    props.onStopPlayback();
   };
 
-  openFullView = () => {
-    this.setState({ isSmallPlayer: false });
+  const openFullView = () => {
+    setIsSmallPlayer(false);
   };
 
-  onCloseFullPlayer = () => {
-    this.setState({ isSmallPlayer: true });
-    if (this.props.onCloseFulllPlayer) {
-      this.props.onCloseFulllPlayer();
+  const onCloseFullPlayer = () => {
+    setIsSmallPlayer(true);
+    if (props.onCloseFulllPlayer) {
+      props.onCloseFulllPlayer();
     }
   };
 
-  handleProgressChanged = (progress: number) => {
-    if (!this.props.episode) return;
+  const handleProgressChanged = (newProgress: number) => {
+    if (!episode) return;
 
-    progress = Math.ceil(progress);
-    podcastService.updateEpisode(this.props.episode.id, { progress });
+    newProgress = Math.ceil(newProgress);
+    podcastService.updateEpisode(episode.id, { progress: newProgress });
 
-    this.setState({ progress });
+    setProgress(newProgress);
   };
 
-  handleLoadedMetadata = (ev: SyntheticEvent<HTMLAudioElement>) => {
-    if (!this.props.episode) return;
+  const handleLoadedMetadata = (ev: SyntheticEvent<HTMLAudioElement>) => {
+    if (!episode) return;
 
-    const progress = this.props.episode.progress || 0;
-    const duration = Math.ceil(ev.currentTarget.duration);
+    const newProgress = episode.progress || 0;
+    const newDuration = Math.ceil(ev.currentTarget.duration);
 
-    if (duration !== this.props.episode.duration) {
-      podcastService.updateEpisode(this.props.episode.id, { duration });
+    if (newDuration !== episode.duration) {
+      podcastService.updateEpisode(episode.id, { duration: newDuration });
     }
 
-    this.setState({ progress, duration });
+    setProgress(newProgress);
+    setDuration(newDuration);
   };
 
-  handleEpisodeEnded = () => {
-    if (!this.props.episode) return;
+  const handleEpisodeEnded = () => {
+    if (!episode) return;
 
-    const progress = this.props.episode.duration;
+    const newProgress = episode.duration;
 
-    this.setState({
-      progress,
-      isPlaying: false,
-    });
+    setProgress(newProgress);
+    setIsPlaying(false);
 
-    this.audioRef.audioEl.pause();
-    podcastService.updateEpisode(this.props.episode.id, { progress });
+    audioRef.audioEl.pause();
+    podcastService.updateEpisode(episode.id, { progress: newProgress });
   };
 
-  handleSeek = (newTime: number) => {
-    this.setState({ progress: newTime });
-    this.audioRef.audioEl.currentTime = newTime;
+  const handleSeek = (newTime: number) => {
+    setProgress(newTime);
+    audioRef.audioEl.currentTime = newTime;
   };
 
-  render() {
-    const { classes, episode } = this.props;
-    const disableSmallPlayer = this.context.navLayout === 'bottom';
-    if (!episode) return null;
-
-    return (
-      <React.Fragment>
-        {!disableSmallPlayer && this.state.isSmallPlayer && (
-          <MiniPlayer
+  return (
+    <React.Fragment>
+      {context.navLayout !== 'bottom' && isSmallPlayer && (
+        <MiniPlayer
+          episode={episode}
+          isPlaying={isPlaying}
+          progress={progress}
+          duration={duration}
+          onClick={openFullView}
+          onTogglePlaying={handleTogglePlaying}
+        />
+      )}
+      <Dialog
+        fullScreen
+        open={!isSmallPlayer || props.fullPlayerOpen === true}
+        onClose={onCloseFullPlayer}
+        TransitionComponent={Transition}
+        classes={{ paper: 'dialog-background' }}
+      >
+        <div
+          style={{ backgroundImage: `url('${episode.cover[600]}')` }}
+          className={classes.backdrop}
+        />
+        <Toolbar>
+          <IconButton onClick={onCloseFullPlayer}>
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" className={classes.episodeTitle}>
+            {episode.title}
+          </Typography>
+        </Toolbar>
+        {(!isSmallPlayer || props.fullPlayerOpen) && (
+          <FullPlayer
             episode={episode}
-            isPlaying={this.state.isPlaying}
-            progress={this.state.progress}
-            duration={this.state.duration}
-            onClick={this.openFullView}
-            onTogglePlaying={this.handleTogglePlaying}
+            isPlaying={isPlaying}
+            progress={progress}
+            duration={duration}
+            onCloseEpisode={handleCloseEpisode}
+            onSeek={handleSeek}
+            onTogglePlaying={handleTogglePlaying}
           />
         )}
-        <Dialog
-          fullScreen
-          open={!this.state.isSmallPlayer || this.props.fullPlayerOpen === true}
-          onClose={this.onCloseFullPlayer}
-          TransitionComponent={Transition}
-          classes={{ paper: 'dialog-background' }}
-        >
-          <div
-            style={{ backgroundImage: `url('${episode.cover[600]}')` }}
-            className={classes.backdrop}
-          />
-          <Toolbar>
-            <IconButton onClick={this.onCloseFullPlayer}>
-              <CloseIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.episodeTitle}>
-              {episode.title}
-            </Typography>
-          </Toolbar>
-          {(!this.state.isSmallPlayer || this.props.fullPlayerOpen) && (
-            <FullPlayer
-              episode={episode}
-              isPlaying={this.state.isPlaying}
-              progress={this.state.progress}
-              duration={this.state.duration}
-              onCloseEpisode={this.handleCloseEpisode}
-              onSeek={this.handleSeek}
-              onTogglePlaying={this.handleTogglePlaying}
-            />
-          )}
-        </Dialog>
-        <AudioPlayer
-          listenInterval={1000}
-          onListen={this.handleProgressChanged}
-          onLoadedMetadata={this.handleLoadedMetadata}
-          onEnded={this.handleEpisodeEnded}
-          src={episode.fileUrl}
-          ref={(element: any) => {
-            this.audioRef = element;
-          }}
-        />
-      </React.Fragment>
-    );
-  }
+      </Dialog>
+      <AudioPlayer
+        listenInterval={1000}
+        onListen={handleProgressChanged}
+        onLoadedMetadata={handleLoadedMetadata}
+        onEnded={handleEpisodeEnded}
+        src={episode.fileUrl}
+        ref={(element: any) => {
+          audioRef = element;
+        }}
+      />
+    </React.Fragment>
+  );
 }
 
-export default withStyles(styles)(Player);
+export default Player;
