@@ -4,17 +4,24 @@ import { Link } from 'react-router-dom';
 import AppContext from '../components/AppContext';
 import { Theme } from '@material-ui/core/styles';
 import { Podcast } from '../models';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
 const podcastService = new PodcastService();
 
 const useStyles = makeStyles((theme: Theme) => ({
-  message: {
-    padding: '30px 15px',
+  messageContainer: {
     textAlign: 'center',
-    '& a': {
-      color: theme.palette.primary.main,
+    padding: '30px 15px',
+    maxWidth: '500px',
+    margin: '0 auto',
+  },
+  message: {
+    marginBottom: '20px',
+  },
+  actions: {
+    '& button': {
+      margin: '0 10px',
     },
   },
   gridList: {
@@ -29,37 +36,66 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+const MyLink = (props: any) => <Link to="/search" {...props} />;
+
 function SubscriptionsPage() {
-  const [podcasts, setPodcasts] = useState<Podcast[]>([]);
+  const [podcasts, setPodcasts] = useState<Podcast[] | null>(null);
   const context = useContext(AppContext);
   const classes = useStyles();
 
   useEffect(() => {
     context.setAppTitle('Subscriptions');
+    loadSubscriptions();
+  }, []);
 
+  function loadSubscriptions() {
     podcastService
       .getSubscriptions()
       .then(podcasts => setPodcasts(podcasts))
       .catch(err => console.error('Failed to get podcasts', err));
-  }, []);
+  }
+
+  async function seedData() {
+    try {
+      await Promise.all([
+        podcastService.subscribe(430333725),
+        podcastService.subscribe(1253186678),
+        podcastService.subscribe(359703665),
+      ]);
+      loadSubscriptions();
+    } catch (err) {
+      console.error('Failed to seed data', err);
+    }
+  }
 
   return (
     <div className="page-container">
-      {podcasts.length === 0 && (
-        <Typography className={classes.message}>
-          It looks like you haven't subscribed to any podcasts yet.&nbsp;
-          <Link to="/search">Let's go find some!</Link>
-        </Typography>
+      {podcasts && podcasts.length === 0 && (
+        <div className={classes.messageContainer}>
+          <Typography className={classes.message}>
+            It looks like you haven't subscribed to any podcasts yet. You can either search for some
+            or use some demo subscriptions. What would you like to do?
+          </Typography>
+          <div className={classes.actions}>
+            <Button color="primary" component={MyLink as any}>
+              Search
+            </Button>
+            <Button color="primary" onClick={seedData}>
+              Demo Data
+            </Button>
+          </div>
+        </div>
       )}
       <div className={classes.gridList}>
-        {podcasts.map(podcast => (
-          <Link to={{ pathname: `/podcast/${podcast.id}` }} rel="div" key={podcast.id}>
-            <div
-              className={classes.tile}
-              style={{ backgroundImage: `url(${podcast.cover['600']}` }}
-            />
-          </Link>
-        ))}
+        {podcasts &&
+          podcasts.map(podcast => (
+            <Link to={{ pathname: `/podcast/${podcast.id}` }} rel="div" key={podcast.id}>
+              <div
+                className={classes.tile}
+                style={{ backgroundImage: `url(${podcast.cover['600']}` }}
+              />
+            </Link>
+          ))}
       </div>
     </div>
   );
