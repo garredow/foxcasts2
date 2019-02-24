@@ -108,7 +108,7 @@ class BottomNav extends React.Component<BottomNavProps, BottomNavState> {
 
     switch (page) {
       case 'subscriptions':
-        this.props.history.push('/subscriptions');
+        this.props.history.push('/');
         break;
       case 'discover':
         this.props.history.push('/search');

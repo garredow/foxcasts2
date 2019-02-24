@@ -35,12 +35,12 @@ const SettingsPage = Loadable({
 
 const Router = () => (
   <Switch>
-    <Route path="/subscriptions" component={SubscriptionsPage} />
     <Route path="/search" component={SearchPage} />
     <Route path="/podcast/:id" component={PodcastDetailPage} />
     <Route path="/playlist/:playlist" component={PlaylistPage} />
     <Route path="/settings" component={SettingsPage} />
-    <Redirect to="/subscriptions" />
+    <Route path="/" component={SubscriptionsPage} />
+    <Redirect to="/" />
   </Switch>
 );
 

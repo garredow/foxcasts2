@@ -45,7 +45,7 @@ type SideNavProps = {
 
 function SideNav({ open, onClose }: SideNavProps) {
   const listItems: ListItem[] = [
-    { path: '/subscriptions', title: 'Subscriptions', icon: <AppsIcon /> },
+    { path: '/', title: 'Subscriptions', icon: <AppsIcon /> },
     { path: '/search', title: 'Search', icon: <SearchIcon /> },
   ];
 
