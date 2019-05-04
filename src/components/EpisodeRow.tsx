@@ -4,6 +4,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/styles';
 import { EpisodeRowLayout } from '../models/Settings';
+import { styledBy } from '../utils/styledBy';
 
 const useStyles = makeStyles({
   played: {
@@ -16,6 +17,11 @@ const useStyles = makeStyles({
   },
   coverArt: {
     borderRadius: '3px',
+    alignSelf: 'start',
+    marginTop: styledBy('layout', {
+      default: '4px',
+      compact: '2px',
+    }),
   },
 });
 
@@ -29,7 +35,7 @@ type EpisodeRowProps = {
 };
 
 function EpisodeRow(props: EpisodeRowProps) {
-  const classes = useStyles();
+  const classes = useStyles(props);
 
   const layoutStyles =
     props.layout === 'compact'
