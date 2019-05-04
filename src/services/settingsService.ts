@@ -1,7 +1,7 @@
 import { Settings } from '../models/Settings';
 
 const defaultSettings: Settings = {
-  theme: 'dark',
+  theme: 'black',
   themePrimary: '#f06292',
   themeSecondary: '#d500f9',
   episodeRowLayout: 'default',
