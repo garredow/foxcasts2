@@ -25,7 +25,7 @@ const parseXmlEpisodes = (xmlString: string): Episode[] => {
 
   const episodes: Episode[] = [];
 
-  recentEpisodes.forEach(rawEpisode => {
+  recentEpisodes.forEach((rawEpisode) => {
     const authorNode =
       rawEpisode.getElementsByTagName('itunes:author')[0] ||
       rawEpisode.getElementsByTagName('author')[0];
@@ -73,9 +73,9 @@ class ApiService {
   async search(query: string) {
     const url = `https://itunes.apple.com/search?media=podcast&term=${query}`;
     const results = await axios
-      .get(`https://proxy.garredow.co/cors/${encodeURIComponent(url)}`)
-      .then(res => res.data.results) // TODO: Use formatPodcast
-      .catch(err => {
+      .get(url)
+      .then((res) => res.data.results) // TODO: Use formatPodcast
+      .catch((err) => {
         console.log('Failed to search', err);
         throw new Error('Failed to search iTunes catalog.');
       });
@@ -85,9 +85,9 @@ class ApiService {
 
   async getEpisodes(feedUrl: string): Promise<Episode[]> {
     const result = await axios
-      .get(`https://proxy.garredow.co/cors/${encodeURIComponent(feedUrl)}`)
-      .then(res => res.data)
-      .catch(err => {
+      .get(feedUrl)
+      .then((res) => res.data)
+      .catch((err) => {
         console.error('Failed to get episodes', err);
         throw new Error('Failed to get episodes for podcast.');
       });
@@ -104,9 +104,9 @@ class ApiService {
   async getPodcastById(podcastId: number): Promise<Podcast> {
     const url = `https://itunes.apple.com/lookup?id=${podcastId}`;
     const result = await axios
-      .get(`https://proxy.garredow.co/cors/${encodeURIComponent(url)}`)
-      .then(res => formatPodcast(res.data.results[0]))
-      .catch(err => {
+      .get(url)
+      .then((res) => formatPodcast(res.data.results[0]))
+      .catch((err) => {
         console.log('Failed to get podcast', err);
         throw new Error('Failed to get podcast detail from iTunes.');
       });
