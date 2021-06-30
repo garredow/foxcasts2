@@ -9,7 +9,7 @@
     "@netlify/functions": "^0.7.2",
     "@types/jest": "^23.3.9",
     "@types/node": "^10.12.3",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "dexie": "^2.0.4",
     "react": "^16.8.3",
     "react-audio-player": "^0.10.0",
