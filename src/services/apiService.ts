@@ -71,7 +71,7 @@ const parseXmlEpisodes = (xmlString: string): Episode[] => {
 
 class ApiService {
   async search(query: string) {
-    const url = `https://itunes.apple.com/search?media=podcast&term=${query}`;
+    const url = `/api/search?q=${query}`;
     const results = await axios
       .get(url)
       .then((res) => res.data.results) // TODO: Use formatPodcast
@@ -85,7 +85,7 @@ class ApiService {
 
   async getEpisodes(feedUrl: string): Promise<Episode[]> {
     const result = await axios
-      .get(feedUrl)
+      .get(`/api/getEpisodes?feedUrl=${encodeURIComponent(feedUrl)}`)
       .then((res) => res.data)
       .catch((err) => {
         console.error('Failed to get episodes', err);
@@ -102,7 +102,7 @@ class ApiService {
   }
 
   async getPodcastById(podcastId: number): Promise<Podcast> {
-    const url = `https://itunes.apple.com/lookup?id=${podcastId}`;
+    const url = `/api/getPodcast?id=${podcastId}`;
     const result = await axios
       .get(url)
       .then((res) => formatPodcast(res.data.results[0]))
