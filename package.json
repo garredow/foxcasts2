@@ -50,7 +50,7 @@
     "enzyme-adapter-react-16": "^1.7.0",
     "react-test-renderer": "^16.6.1",
     "sinon": "^7.1.1",
-    "webpack-bundle-analyzer": "^2.13.1"
+    "webpack-bundle-analyzer": "^3.3.2"
   },
   "browserslist": [
     ">0.2%",
