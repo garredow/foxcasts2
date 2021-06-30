@@ -6,6 +6,7 @@ import { Theme } from '@material-ui/core/styles';
 import { Podcast } from '../models';
 import { Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import ProgressButton from '../components/ProgressButton';
 
 const podcastService = new PodcastService();
 
@@ -40,6 +41,7 @@ const MyLink = (props: any) => <Link to="/search" {...props} />;
 
 function SubscriptionsPage() {
   const [podcasts, setPodcasts] = useState<Podcast[] | null>(null);
+  const [seeding, setSeeding] = useState(false);
   const context = useContext(AppContext);
   const classes = useStyles();
 
@@ -51,11 +53,12 @@ function SubscriptionsPage() {
   function loadSubscriptions() {
     podcastService
       .getSubscriptions()
-      .then(podcasts => setPodcasts(podcasts))
-      .catch(err => console.error('Failed to get podcasts', err));
+      .then((podcasts) => setPodcasts(podcasts))
+      .catch((err) => console.error('Failed to get podcasts', err));
   }
 
   async function seedData() {
+    setSeeding(true);
     try {
       await Promise.all([
         podcastService.subscribe(430333725),
@@ -66,6 +69,7 @@ function SubscriptionsPage() {
     } catch (err) {
       console.error('Failed to seed data', err);
     }
+    setSeeding(false);
   }
 
   return (
@@ -80,15 +84,20 @@ function SubscriptionsPage() {
             <Button color="primary" component={MyLink as any}>
               Search
             </Button>
-            <Button color="primary" onClick={seedData}>
-              Demo Data
-            </Button>
+            <ProgressButton
+              variant="contained"
+              disabled={seeding}
+              loading={seeding}
+              onClick={seedData}
+            >
+              Use Demo Data
+            </ProgressButton>
           </div>
         </div>
       )}
       <div className={classes.gridList}>
         {podcasts &&
-          podcasts.map(podcast => (
+          podcasts.map((podcast) => (
             <Link to={{ pathname: `/podcast/${podcast.id}` }} rel="div" key={podcast.id}>
               <div
                 className={classes.tile}
